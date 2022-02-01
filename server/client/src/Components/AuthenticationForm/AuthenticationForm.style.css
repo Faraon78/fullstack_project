@@ -1,0 +1,30 @@
+.field{
+    margin-top: 20px;
+    margin-bottom: 50px;
+};
+
+div.auth-header{
+    padding-top: 10px;        
+}
+.btn{
+    margin-top: 30px;
+    gap: 20px;
+    justify-content: center;
+}
+
+.btn button{
+  width: 120px;  
+  margin-bottom: 30px;
+  margin-right: 10px;
+  margin-left: 10px; 
+  margin-top: 20px;
+  
+    
+}
+.btn button:last-child{
+    background-color: rgb(26, 160, 26);
+}
+.alert {
+    position: absolute;
+    min-width: 368px;
+}
