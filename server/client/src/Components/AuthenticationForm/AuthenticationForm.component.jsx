@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { useHttp } from '../../Hooks/http.hook';
 import { useMessage } from '../../Hooks/message.hook';
+import {Cookies} from 'js-cookie';
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -30,8 +31,8 @@ function AuthenticationForm() {
     setPassword(event.target.value)
     }
 
-    const registration =() =>{
-        console.log('Запустили registration');
+    const startRegistr =() =>{
+        console.log('Запустили registr');
         const valid = validation();
         
         if (valid){
@@ -58,7 +59,7 @@ function AuthenticationForm() {
                 return true
             }
             
-         else {
+        else {
             console.log ("Validation = false")
                 return false
             }           
@@ -66,23 +67,23 @@ function AuthenticationForm() {
 
     const registerHandler = async ()=>{
         try{
-            console.log('Запустили registerHandler')
+            console.log('Запустили registerHandler');
             
             const data = await request (
                 'http://localhost:5000/auth/register', 
                 'POST', 
                 {email, password} 
                 );
-            console.log('DATA', data)
+            console.log('DATA', data);
         }catch(e){
 
         }
     }
-    const logination =() =>{
-        console.log('Запустили logination')
+    const startlogin =() =>{
+        console.log('Запустили login');
         const valid = validation();
         if (valid){
-            loginHandler()
+            loginHandler();
         }
     }
     const loginHandler = async ()=>{
@@ -92,7 +93,11 @@ function AuthenticationForm() {
                 'POST', 
                 {email, password} 
                 );
-            console.log('DATA', data)
+            console.log('DATA', data);
+            
+            // так cookie не видит
+            const cookie = Cookies.get("access_token");
+            console.log(cookie);
         }catch(e){
 
         }
@@ -146,12 +151,12 @@ function AuthenticationForm() {
             <div className='btn'>   
                 <Button variant="contained" className="log-btn"
                 disabled={loading}
-                onClick={logination}
+                onClick={startlogin}
                  >Log in
                 </Button>  
                 
                 <Button variant="contained" className='reg'
-                 onClick={registration} 
+                 onClick={startRegistr} 
                 disabled={loading}
                 > Register
                 </Button>
