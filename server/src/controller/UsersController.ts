@@ -1,7 +1,7 @@
 import {getRepository, getConnection} from "typeorm";
 import * as bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
-import * as cookieParser from "cookie-parser";
+
 
 import {NextFunction, Request, Response} from "express";
 import {Users} from "../entity/Users";
@@ -48,8 +48,7 @@ export class UsersController {
             const {email, password} = request.body;
             console.log(email, password);
             const user = await this.usersRepository.findOne({ email: email });
-            console.log(user);
-
+            
             if(!user){
                 return response.status(400).json({message:'Пользователь не найден'})
             }
@@ -69,8 +68,8 @@ export class UsersController {
             console.log(token);
 
             const payloadOptions ={
-                maxAge: 3000,
-                sameSite: true,
+                maxAge: 60000,
+                //sameSite: true,
                 httpOnly: true
             }
             

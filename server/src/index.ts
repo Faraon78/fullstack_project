@@ -18,7 +18,8 @@ createConnection().then(async connection => {
     app.use(cookieParser());
 
     // register express routes from defined application routes
-    Routes.forEach(route => {
+    
+    Routes.forEach(route => {  //эта функция автоматически создана при инициализации проекта typeORM
         (app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
             const result = (new (route.controller as any))[route.action](req, res, next);
             if (result instanceof Promise) {
@@ -30,10 +31,7 @@ createConnection().then(async connection => {
         });
     });
 
-    // setup express app here
-    // ...
-
-    // start express server
+   
     app.listen(5000);
 
     // insert new users for test
@@ -44,6 +42,6 @@ createConnection().then(async connection => {
     }));*/
     
 
-    console.log("Express server has started on port 5000. Open http://localhost:5000/users to see results");
+    console.log("Express server has started on port 5000");
 
 }).catch(error => console.log(error));
