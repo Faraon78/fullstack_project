@@ -6,6 +6,7 @@ import PostPage from "../Pages/PostPage/PostPage.component";
 import UserPage from "../Pages/UserPage/UserPage.component";
 import UserListPage from "../Pages/UserListPage/UserListPage.component";
 import AuthPage from "../Pages/AuthPage/AuthPage.component";
+import ProfilePage from "../Pages/ProfilePage/ProfilePage.component";
 import NavigateMenu from "../Components/NavigateMenu/NavigateMenu.component";
 
 
@@ -20,7 +21,8 @@ export const useRoutes = () => {
                 <Route path='/' element={<MainPage/>}/>
                 <Route path='/post/:id' element={<PostPage/>}/>
                 <Route path='/users/:id' element={<UserPage />}/>
-                <Route path='/users' element={<UserListPage />}/>                               
+                <Route path='/users' element={<UserListPage />}/>
+                <Route path='/myprofile' element={<ProfilePage />}/>                               
             </Routes>             
           </main>
         )

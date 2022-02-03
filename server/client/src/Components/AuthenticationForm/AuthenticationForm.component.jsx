@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
+import { useDispatch} from 'react-redux';
 import { useHttp } from '../../Hooks/http.hook';
 import { useMessage } from '../../Hooks/message.hook';
-import {Cookies} from 'js-cookie';
+import {updateCurrentUser} from '../../Redux/currentUser/currentUser.actions';
+//import {Cookies} from 'js-cookie';
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -12,6 +14,7 @@ import './AuthenticationForm.style.css';
 
 
 function AuthenticationForm() {
+    const dispatch = useDispatch();
     const message = useMessage();
     const {loading, error, request}= useHttp();
     const [email, setEmail]= useState("");
@@ -72,7 +75,8 @@ function AuthenticationForm() {
             const data = await request (
                 'http://localhost:5000/auth/register', 
                 'POST', 
-                {email, password} 
+                {email, password},
+                {credentials:true} 
                 );
             console.log('DATA', data);
         }catch(e){
@@ -91,13 +95,24 @@ function AuthenticationForm() {
             const data = await request (
                 ' http://localhost:5000/auth/login', 
                 'POST', 
-                {email, password} 
+                {email, password},
+                {'credentials': 'true'}  
                 );
             console.log('DATA', data);
             
             // так cookie не видит
-            const cookie = Cookies.get("access_token");
+            const cookie = data.request.cookie("access_token");
+
             console.log(cookie);
+
+            //если удачно залогинились, то ложим в Redux CurrentUser
+            const currentUser = {
+                email:email,
+                password:password
+            }
+            dispatch(updateCurrentUser(currentUser)) 
+            
+
         }catch(e){
 
         }
@@ -131,6 +146,7 @@ function AuthenticationForm() {
                 placeholder="Email"
                 type="email"
                 name ="email"
+                autoComplete="off"
                 onChange={changeEmail}
                 />
                 {(errormail) && <Alert severity="error" className='alert'>Enter the correct Email</Alert>} 

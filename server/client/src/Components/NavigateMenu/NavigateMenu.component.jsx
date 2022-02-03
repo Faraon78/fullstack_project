@@ -13,6 +13,9 @@ function NavigateMenu (){
           <NavLink to="/users">
             <Buttons className="main-navigate-buttons">USERS</Buttons> 
           </NavLink>
+          <NavLink to="/myprofile">
+            <Buttons className="main-navigate-buttons">MY PROFILE</Buttons> 
+          </NavLink>
         </nav>
     )
 }

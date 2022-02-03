@@ -10,7 +10,7 @@ import './App.css';
 function App() { 
   const routes = useRoutes(false);   
   let isAuthenticated = false;  
-  const {error, request}= useHttp(); 
+  const {/*error,*/ request}= useHttp(); 
 
   const logout = async ()=>{
     try{

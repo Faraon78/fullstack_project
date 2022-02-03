@@ -19,10 +19,7 @@ export class Users {
     email: string;
 
     @Column({default: "NULL"})
-    address_street: string;
-
-    @Column({default: "NULL"})
-    address_suite: string;
+    address: string;
 
     @Column({default: "NULL"})
     phone: string;

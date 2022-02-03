@@ -7,15 +7,17 @@ import * as cookieParser from "cookie-parser";
 
 import {Request, Response} from "express";
 import {Routes} from "./routes";
-import {Users} from "./entity/Users";
-
 
 createConnection().then(async connection => {
 
     const app = express();
     app.use(bodyParser.json());
-    app.use(cors());
+    app.use(cors({
+        credentials: true,
+        origin: "*"}));
+
     app.use(cookieParser());
+    
 
     // register express routes from defined application routes
     
@@ -32,16 +34,9 @@ createConnection().then(async connection => {
     });
 
    
-    app.listen(5000);
+    app.listen(process.env.PORT);
 
-    // insert new users for test
-    /*await connection.manager.save(connection.manager.create(Users, {
-        firstName: "Timber",
-        lastName: "Saw",
-        age: 27
-    }));*/
     
-
     console.log("Express server has started on port 5000");
 
 }).catch(error => console.log(error));
