@@ -4,7 +4,11 @@
 };
 
 div.auth-header{
-    padding-top: 10px;        
+    padding-top: 10px;  
+    text-align: center;      
+}
+h2.auth-header{
+    text-align: center;  
 }
 .btn{
     margin-top: 30px;
@@ -27,4 +31,9 @@ div.auth-header{
 .alert {
     position: absolute;
     min-width: 368px;
+}
+div.wrapper-auth{
+    display: flex;
+    justify-content: center;
+    text-align: center;
 }

@@ -18,7 +18,7 @@ export const Routes = [{
     action: "login"
 }, {
     method: "get",
-    route: "/users/:id",
+    route: "/getuser",
     controller: UsersController,
     action: "one"
 }, {
