@@ -1,9 +1,9 @@
 import CurrentUserActionTypes from './currentUser.actionTypes';
 
 
-export const fetchCurrentUserStart = (email) => ({
+export const fetchCurrentUserStart = id => ({
   type: CurrentUserActionTypes.FETCH_CURRENTUSER_START,
-  payload: email
+  payload: id
 });
 
 export const fetchCurrentUserSuccess = data => ({
@@ -16,7 +16,7 @@ export const fetchCurrentUserFailure = errorMessage => ({
   payload: errorMessage
 });
 
-export const updateCurrentUser = (currentUser) => ({
+export const updateCurrentUser = currentUser => ({
     type: CurrentUserActionTypes.UPDATE_CURRENTUSER,
     payload: currentUser
   });

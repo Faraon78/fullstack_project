@@ -9,30 +9,30 @@ import AuthPage from "../Pages/AuthPage/AuthPage.component";
 import ProfilePage from "../Pages/ProfilePage/ProfilePage.component";
 import NavigateMenu from "../Components/NavigateMenu/NavigateMenu.component";
 
-
-export const useRoutes = () => {
-  let isAuthenticated = false;
+export const useRoutes = (isAuthenticated) => {
+  
     if(isAuthenticated){
         return(
-          <main className="main">
-               <NavigateMenu/>            
-            <Routes>
+          <div className="content">
+              <NavigateMenu/>
+            <div className="content-pages">
+              <Routes>                
                 <Route path='/:page' element={<MainPage/>}/>
                 <Route path='/' element={<MainPage/>}/>
                 <Route path='/post/:id' element={<PostPage/>}/>
                 <Route path='/users/:id' element={<UserPage />}/>
                 <Route path='/users' element={<UserListPage />}/>
-                <Route path='/myprofile' element={<ProfilePage />}/>                               
-            </Routes>             
-          </main>
-        )
-    }
+                <Route path='/myprofile' element={<ProfilePage />}/>
+            </Routes>
+          </div>
+        </div>
+      )
+  }
 
     return (
       <main className="main">
         <Routes>
-            <Route exact path='/' element={<AuthPage/>}/>
-            
+            <Route exact path='/' element={<AuthPage/>}/>            
         </Routes>
         
       </main>

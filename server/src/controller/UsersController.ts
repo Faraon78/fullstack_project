@@ -16,26 +16,30 @@ export class UsersController {
     }
 
     async one (request: Request, response: Response, next: NextFunction) {
-        return this.usersRepository.findOne(request.params.email);
+        console.log(request.params.id)
+        return this.usersRepository.findOne(request.params.id);
     }
 
+    //Регистрация нового пользователя
     async save (request: Request, response: Response, next: NextFunction) {
         try{
             const {email, password} = request.body;
-           // console.log(email, password);
-            const candidate = this.usersRepository.findOne({ email: email });
+            console.log(email, password);
+           //проверяем есть ли уже такой пользователь
+            const candidate = await this.usersRepository.findOne({ email: email });
             
             if(candidate){
-               return response.status(400).json({message:'Такой пользователь уже существует'})
+                return response.status(400).json({message:'Такой пользователь уже существует'})
             };
-            //console.log('Пользователь не найден, будем создавать');
+            //шифруем пароль
             const hashedPassword = await bcrypt.hash(password, 12);
-            
+
+            //создаем нового Usera
             const newUser = new Users();
             newUser.email = email;
             newUser.password=hashedPassword;
-            //console.log(newUser);
-
+            
+            // сохраняем нового пользователя
             this.usersRepository.save(newUser);
             return  response.status(201).json({message:"Пользователь создан"});
     
@@ -63,26 +67,25 @@ export class UsersController {
             //console.log("Пользователь найден");
             
             // формируем токен
-            const payload ={
-                userEmail: user.email,
-                userId: user.id
-            }
-
-            const token = jwt.sign(payload, process.env.JWT_SECRET);
+            
+            const token = jwt.sign(
+                { userId: user.id }, 
+                process.env.JWT_SECRET,
+                { expiresIn:'1h'}
+            );
             
             // заголовки для cookie
-            const cookieOptions ={                
+           /* const cookieOptions ={                
                     maxAge: 900000,
                     //sameSite: false,
                     httpOnly: true,                        
                     secure: true,       
-            }
+            }*/
             
-            console.log('Cookies: ', request.cookies);
-
-            response.cookie("access_cookie", token, cookieOptions)            
+            response
+           // .cookie("access_cookie", token, cookieOptions)            
             .status(200)
-            .json({token, message:"Logged is successfully"})
+            .json({token, userId: user.id, message:"Logged is successfully"})
             
     
         } catch(err){

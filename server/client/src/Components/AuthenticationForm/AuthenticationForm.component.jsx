@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import { useDispatch} from 'react-redux';
+import React, {useContext, useEffect, useState} from 'react';
+
 import { useHttp } from '../../Hooks/http.hook';
 import { useMessage } from '../../Hooks/message.hook';
-import {updateCurrentUser} from '../../Redux/currentUser/currentUser.actions';
-//import {Cookies} from 'js-cookie';
+
+import { AuthContext } from '../../context/authContext';
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -14,8 +14,9 @@ import './AuthenticationForm.style.css';
 
 
 function AuthenticationForm() {
-    const dispatch = useDispatch();
+    const auth = useContext(AuthContext);    
     const message = useMessage();
+
     const {loading, error, request}= useHttp();
     const [email, setEmail]= useState("");
     const [password, setPassword]= useState("");
@@ -24,14 +25,13 @@ function AuthenticationForm() {
 
     useEffect(()=>{
         message (error);
-        //clearError()
     },[error, message]);
         
     const changeEmail = (event) =>{
-    setEmail(event.target.value)
+    setEmail(event.target.value);
    }
    const changePassword = (event) =>{
-    setPassword(event.target.value)
+    setPassword(event.target.value);
     }
 
     const startRegistr =() =>{
@@ -39,52 +39,46 @@ function AuthenticationForm() {
         const valid = validation();
         
         if (valid){
-            registerHandler()
+            registerHandler();
         }
     }
     const validation =()=>{
-        console.log("Запустили validation");
+        
         let testEmail=/\S+@\S+/.test(email);
         if (!testEmail){
-            setErrormail(true)            
+            setErrormail(true);            
         } else{
-            setErrormail(false) 
+            setErrormail(false); 
         }
         if (password.length<6){
-            setErrorpass(true)
+            setErrorpass(true);
         } else{
-            setErrorpass(false)
+            setErrorpass(false);
         }
         if(testEmail && (password.length>=6)){
-            setErrormail(false)
-            setErrorpass(false)
-            console.log ("Validation = true")
+            setErrormail(false);
+            setErrorpass(false);            
                 return true
             }
             
         else {
-            console.log ("Validation = false")
                 return false
             }           
     }
 
     const registerHandler = async ()=>{
         try{
-            console.log('Запустили registerHandler');
-            
-            const data = await request (
+            await request (
                 'http://localhost:5000/auth/register', 
                 'POST', 
                 {email, password},
                 {credentials:true} 
-                );
-            console.log('DATA', data);
+                );            
         }catch(e){
-
+            console.log(e.message);
         }
     }
     const startlogin =() =>{
-        console.log('Запустили login');
         const valid = validation();
         if (valid){
             loginHandler();
@@ -97,24 +91,12 @@ function AuthenticationForm() {
                 'POST', 
                 {email, password},
                 {'credentials': 'true'}  
-                );
-            console.log('DATA', data);
-            
-            // так cookie не видит
-            const cookie = data.request.cookie("access_token");
-
-            console.log(cookie);
-
-            //если удачно залогинились, то ложим в Redux CurrentUser
-            const currentUser = {
-                email:email,
-                password:password
-            }
-            dispatch(updateCurrentUser(currentUser)) 
-            
-
+                );           
+           
+            auth.login(data.token, data.userId);
+        
         }catch(e){
-
+            console.log(e.message);
         }
     }
 
@@ -126,10 +108,10 @@ function AuthenticationForm() {
             width: 400,
             height: 400,
             backgroundColor: 'white',       
-            color: 'primary.main',     
-            
+            color: 'primary.main',            
           }}
-         component="form"      
+
+         component="form"
          noValidate
          autoComplete="off"
         >
@@ -162,26 +144,32 @@ function AuthenticationForm() {
                 onChange={changePassword} 
 
                 />
-                 {(errorpass) && <Alert severity="error" className='alert'>password must be at least 6 characters</Alert>}
+                 {(errorpass) && <Alert 
+                 severity="error" 
+                 className='alert'
+                 >password must be at least 6 characters
+                 </Alert>}
             </div> 
+
             <div className='btn'>   
-                <Button variant="contained" className="log-btn"
+                <Button variant="contained"
+                className="log-btn"
                 disabled={loading}
                 onClick={startlogin}
                  >Log in
                 </Button>  
                 
-                <Button variant="contained" className='reg'
-                 onClick={startRegistr} 
+                <Button variant="contained" 
+                className='reg'
+                onClick={startRegistr} 
                 disabled={loading}
                 > Register
                 </Button>
                
             </div> 
         </Box>
-        
     </div>
-        );     
+        );
 }
 
 export default AuthenticationForm;
