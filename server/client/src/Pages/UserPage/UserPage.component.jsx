@@ -8,7 +8,9 @@ function UserPage() {
   let {id} = useParams();
   console.log(id);
   return(
+    <div className="content-pages">
        <User id={id}/>
+    </div>
    )
 }
 

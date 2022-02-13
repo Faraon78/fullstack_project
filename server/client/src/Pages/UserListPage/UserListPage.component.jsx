@@ -5,8 +5,10 @@ import UserList from '../../Components/UserList/UserList.component';
 import './UserListPage.style.css';
 
 function UserListPage() {    
-  return (   
-      <UserList/>    
+  return (
+    <div className="content-pages">  
+      <UserList/> 
+    </div>    
   );
 }
  

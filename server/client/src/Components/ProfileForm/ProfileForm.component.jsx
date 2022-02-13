@@ -7,7 +7,9 @@ import Avatar from '@mui/material/Avatar';
 
 import './ProfileForm.style.css';
 
-function ProfileForm(props) {    
+function ProfileForm(props) {   
+    console.log(props.user); 
+    console.log(props.user.email); 
 
     return (
         <div className='profile'>
@@ -33,7 +35,7 @@ function ProfileForm(props) {
             <TextField
              id="standard-read-only-input"
             label="Email Read Only"
-             defaultValue={props.user.email}
+            defaultValue={props.user.email}
             InputProps={{
             readOnly: true,
             }}

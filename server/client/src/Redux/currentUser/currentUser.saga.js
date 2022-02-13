@@ -2,10 +2,12 @@ import {takeEvery, put, call} from 'redux-saga/effects';
 import CurrentUserActionTypes from './currentUser.actionTypes';
 import {fetchCurrentUserSuccess, fetchCurrentUserFailure} from './currentUser.actions';
 
-export function* fetchCurrentUserAsync(){
+export function* fetchCurrentUserAsync({payload}){
     try {
-      console.log("запустили fetchCurrentUserAsync, id= ")
-        let data = yield call(fetch,'http://localhost:5000/getuser');
+      console.log("запустили fetchCurrentUserAsync, id= ");
+      console.log("payload ", payload);
+
+        let data = yield call(fetch,`http://localhost:5000/users/${payload}`);
         console.log("data ", data);
          data = yield data.json();
         yield put(fetchCurrentUserSuccess(data));
@@ -17,5 +19,5 @@ export function* fetchCurrentUserAsync(){
 export function* currentUserWatcher(){
     yield takeEvery(
         CurrentUserActionTypes.FETCH_CURRENTUSER_START, 
-        fetchCurrentUserAsync())
+        fetchCurrentUserAsync)
 }

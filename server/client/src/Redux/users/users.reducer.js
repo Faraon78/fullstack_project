@@ -22,7 +22,7 @@ export const usersReducer = (state = initialState, action) =>{
           return {
             ...state,
             isFetching: false,
-            errorMessage: action.payload
+            errorMessage: null
           };
         default:
           return state;

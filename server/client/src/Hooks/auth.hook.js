@@ -1,7 +1,8 @@
 import {useState, useCallback, useEffect} from 'react';
 import { useDispatch } from 'react-redux';
 
-import {updateCurrentUser} from '../Redux/currentUser/currentUser.actions';
+import {updateCurrentUser, userSetToken} from '../Redux/currentUser/currentUser.actions';
+import {config} from '../config';
 
 export const useAuth = () =>{
     const [token, setToken] = useState(null);
@@ -14,16 +15,19 @@ export const useAuth = () =>{
         setToken(jwtToken);
         setUserId(id);
 
-        localStorage.setItem(storageName, JSON.stringify({
+        localStorage.setItem(config.STORAGENAME, JSON.stringify({
             userId:id, token:jwtToken
+               
         }))
-    }, []);
+        dispatch(userSetToken(jwtToken)) 
+    }, [dispatch]);
     
     const logout = useCallback(() =>{
         setToken(null);
         setUserId(null);
         localStorage.removeItem(storageName);
-        dispatch(updateCurrentUser({}));        
+        dispatch(updateCurrentUser({})); 
+        dispatch(userSetToken(null));        
         console.log(localStorage.getItem(storageName));
         console.log("token ", token);
         console.log("завершили logout");

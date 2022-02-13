@@ -17,6 +17,11 @@ export const fetchCurrentUserFailure = errorMessage => ({
 });
 
 export const updateCurrentUser = currentUser => ({
-    type: CurrentUserActionTypes.UPDATE_CURRENTUSER,
+    type: CurrentUserActionTypes.UPDATE_CURRENT_USER,
     payload: currentUser
+  });
+
+  export const userSetToken = token => ({
+    type: CurrentUserActionTypes.SET_TOKEN,
+    payload: token
   });

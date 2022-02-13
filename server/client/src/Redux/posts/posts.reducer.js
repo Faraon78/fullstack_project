@@ -22,7 +22,7 @@ export const postsReducer = (state = initialState, action) =>{
           return {
             ...state,
             isFetching: false,
-            errorMessage: action.payload
+            errorMessage: null
           };
         default:
           return state;

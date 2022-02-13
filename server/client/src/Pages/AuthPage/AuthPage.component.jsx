@@ -4,8 +4,10 @@ import AuthenticationForm from '../../Components/AuthenticationForm/Authenticati
 
 function AuthPage() {
 
-    return(    
-        <AuthenticationForm/>
+    return(
+        <div className="main">   
+            <AuthenticationForm/>
+        </div> 
         );     
 }
 

@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React , {useState, useEffect}from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { NavLink } from 'react-router-dom';
 
 import { useHttp } from '../../Hooks/http.hook';
-import { useAuth } from '../../Hooks/auth.hook';
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -12,11 +10,9 @@ import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
-import './AuthenticationForm.style.css';
+import './RegisterForm.style.css';
 
-function AuthenticationForm() {
-    
-    const {login} = useAuth();
+function RegisterForm() {
     const {loading, error, request, clearError}= useHttp();
     const Alert = React.forwardRef(function Alert(props, ref) {
         return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -40,7 +36,8 @@ function AuthenticationForm() {
     const formik = useFormik({
         initialValues: {
         email:'',
-        password:''
+        password:'',
+        confirmPassword:''
     },
     validationSchema: Yup.object({        
         email: Yup.string()
@@ -49,38 +46,38 @@ function AuthenticationForm() {
         password: Yup.string()
           .min(6, 'Must be 6 characters or more')
           .required('Required'),
+        confirmPassword: Yup.string()
+          .oneOf([Yup.ref('password')],'Password mismatch')
+          .required('Required'),
       }),
       onSubmit: values => {
-        loginHandler(values.email, values.password);
+        registerHandler(values.email, values.password);
       },
-    });
+    });    
     
-    const loginHandler = async (email, password)=>{
-        try{            
-            const data = await request (
-                ' http://localhost:5000/auth/login', 
+    const registerHandler = async (email, password)=>{
+        try{
+            await request (
+                'http://localhost:5000/auth/register', 
                 'POST', 
                 {email, password},
-                {'credentials': 'true'}
+                {credentials:true} 
                 );
-            console.log('получили ответ с сервера: ', data)    
-                login(data.token, data.userId);
-                console.log('отработал метод login')
-        
         }catch(e){
-            console.log(e.message); 
-    }}
+            console.log(e.message);
+        }
+    }
 
     return(
-        
-        <div className='wrapper-auth'>
+        <div className="main">
+      <div className='wrapper-reg'>
         <form 
             onSubmit={formik.handleSubmit}
         >
         <Box 
         sx={{
             width: 400,
-            height: 400,
+            height: 470,
             backgroundColor: 'white',
             color: 'primary.main',
         }}
@@ -90,11 +87,11 @@ function AuthenticationForm() {
         autoComplete="off"
         >
             <div className='auth-header'>
-                <h2 >SIGN IN</h2>
+                <h2 >Register new user</h2>
             </div>
             
             <div className="field">
-                
+
                 <TextField 
                 id="outlined-required"
                 label='Email'
@@ -129,18 +126,32 @@ function AuthenticationForm() {
                 
             </div>
 
-            <div className='btn'>
+            <div className="field">
+                <TextField 
+                label="confirmPassword"
+                type="password"
+                name="confirmPassword"
+                value={formik.values.confirmPassword} 
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                autoComplete="current-password"
+                />
+
+                {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
+                <div className='error-auth'>{formik.errors.confirmPassword}</div>
+                ) : null}
                 
+            </div>
+
+            <div className='btn'>
                 <Button variant="contained"
                 className="log-btn"
                 disabled={ loading }
                 type = 'submit'
-                 >Login
+                 >Register
                 </Button>
             </div>
-            <NavLink to="/register">
-                <p> New user? Try register</p>
-            </NavLink>
+            
         </Box>
         </form>
         {{error} && <Snackbar open={open} 
@@ -150,7 +161,8 @@ function AuthenticationForm() {
             </Alert>
         </Snackbar>}
     </div>
-    
+    </div>
     );
 }
-export default AuthenticationForm;
+
+export default RegisterForm;

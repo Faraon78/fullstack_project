@@ -31,7 +31,7 @@ function MainPage() {
   const count = Math.ceil(posts.length / 8);  
    
     return(      
-      <div>        
+      <div className="content-pages">        
           <Pagination count={count}  color="primary" className="pagescount" 
           renderItem={(item) => (
             <PaginationItem

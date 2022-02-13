@@ -14,22 +14,21 @@ function ProfilePage() {
     console.log(id);
     
     //запускаем загрузку из БД всех данных пользователя
-    useEffect(() => {  //useCallback ??
+    useEffect(() => {  
       console.log("запустили загрузку, id= ", id);
       
       dispatch(fetchCurrentUserStart(id));
     }, [dispatch, id]);
     const user = useSelector(state => state.currentUser.currentUser);
-    //запоминаем все данные пользователя и передаем для отображения
-    //const user = useSelector(state => state.currentUser.currentUser);
-    /*const user = {
-      email: "ilonmask@com", 
-      password:"123456",
-      userName: "maska"};*/
-      console.log("user: ", user);
-    return (
 
-      <ProfileForm user = {user}/>
+    //запоминаем все данные пользователя и передаем для отображения    
+    
+      console.log("user: ", user);
+
+    return (
+      <div className="content-pages">
+        <ProfileForm user = {user}/>
+      </div>
   );
 }
  

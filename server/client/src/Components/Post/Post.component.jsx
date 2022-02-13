@@ -21,14 +21,14 @@ function Post(props) {
   
   const posts = useSelector(state => state.posts.posts);
  
-  const post = posts.find(post => Number(post.id) === Number(props.id))
+  const post = posts.find(post => +(post.id) === +(props.id))
   const users = useSelector(state => state.users.users);
   
-  const user = users.find(user => Number(user.id) === Number(post.userId));
+  const user = users.find(user => +(user.id) === +(post.userId));
   const comments = useSelector(state => state.comments.comments)
   
   return (
-    <div>
+    <div className="content-pages">
     <Card sx={{ minWidth: 275, maxWidth: 1000 }} className="card-note">
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>

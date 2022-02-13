@@ -52,19 +52,20 @@ export class UsersController {
         
         try{
             const {email, password} = request.body;
+            console.log(email, password);
             // находим user в базе по email
             const user = await this.usersRepository.findOne({ email: email });
-            
+            console.log(user);
             if(!user){
                 return response.status(400).json({message:'Пользователь не найден'})
             }
             // проверяем правильность пароля
             const isMatch = await bcrypt.compare(password, user.password);
-            
+            console.log(isMatch);
             if(!isMatch){
                 return response.status(400).json({message:'Неверный пароль'})
             }
-            //console.log("Пользователь найден");
+            console.log("Пользователь найден");
             
             // формируем токен
             
@@ -73,7 +74,7 @@ export class UsersController {
                 process.env.JWT_SECRET,
                 { expiresIn:'1h'}
             );
-            
+            console.log(token);
             // заголовки для cookie
            /* const cookieOptions ={                
                     maxAge: 900000,
@@ -82,10 +83,7 @@ export class UsersController {
                     secure: true,       
             }*/
             
-            response
-           // .cookie("access_cookie", token, cookieOptions)            
-            .status(200)
-            .json({token, userId: user.id, message:"Logged is successfully"})
+            response.status(200).json({token, userId: user.id, message:"Logged is successfully"})
             
     
         } catch(err){
