@@ -1,30 +1,30 @@
-import UsersActionTypes from './users.actionTypes';
+import UsersActionTypes from './users.actionTypes'
 
-const initialState ={
+const initialState = {
     users: [],
     isFetching: false,
-    errorMessage: undefined
+    errorMessage: undefined,
 }
-export const usersReducer = (state = initialState, action) =>{
+export const usersReducer = (state = initialState, action) => {
     switch (action.type) {
         case UsersActionTypes.FETCH_USERS_START:
-          return {
-            ...state,
-            isFetching: false
-          };
+            return {
+                ...state,
+                isFetching: false,
+            }
         case UsersActionTypes.FETCH_USERS_SUCCESS:
-          return {
-            ...state,
-            isFetching: true,
-            users: action.payload
-          };
+            return {
+                ...state,
+                isFetching: true,
+                users: action.payload,
+            }
         case UsersActionTypes.FETCH_USERS_FAILURE:
-          return {
-            ...state,
-            isFetching: false,
-            errorMessage: null
-          };
+            return {
+                ...state,
+                isFetching: false,
+                errorMessage: null,
+            }
         default:
-          return state;
-      }
+            return state
+    }
 }

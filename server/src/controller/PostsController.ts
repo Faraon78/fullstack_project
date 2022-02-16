@@ -1,29 +1,29 @@
-import {getRepository} from "typeorm";
-import {NextFunction, Request, Response} from "express";
-import {Posts} from "../entity/Posts";
+import { getRepository } from 'typeorm'
+import { NextFunction, Request, Response } from 'express'
+import { Posts } from '../entity/Posts'
 
 export class PostsController {
-
-    private postsRepository = getRepository(Posts);
+    private postsRepository = getRepository(Posts)
 
     async all(request: Request, response: Response, next: NextFunction) {
-        return this.postsRepository.find();
+        return this.postsRepository.find()
     }
     async allforUser(request: Request, response: Response, next: NextFunction) {
-        return this.postsRepository.find({ where: { userId: request.params.userId } });
+        return this.postsRepository.find({
+            where: { userId: request.params.userId },
+        })
     }
 
     async one(request: Request, response: Response, next: NextFunction) {
-        return this.postsRepository.findOne(request.params.id);
+        return this.postsRepository.findOne(request.params.id)
     }
 
     async save(request: Request, response: Response, next: NextFunction) {
-        return this.postsRepository.save(request.body);
+        return this.postsRepository.save(request.body)
     }
 
     async remove(request: Request, response: Response, next: NextFunction) {
-        let postToRemove = await this.postsRepository.findOne(request.params.id);
-        await this.postsRepository.remove(postToRemove);
+        let postToRemove = await this.postsRepository.findOne(request.params.id)
+        await this.postsRepository.remove(postToRemove)
     }
-
 }

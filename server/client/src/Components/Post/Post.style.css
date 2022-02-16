@@ -1,10 +1,12 @@
-.card-note, .text-header, .email{
+.card-note,
+.text-header,
+.email {
     text-align: left;
 }
-.text-header{
+.text-header {
     padding-left: 15px;
     color: rgb(76, 76, 248);
 }
-.email{
+.email {
     padding-left: 35px;
 }

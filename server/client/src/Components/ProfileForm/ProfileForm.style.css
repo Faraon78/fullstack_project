@@ -1,19 +1,25 @@
-.profile{
+.profile {
     display: inline-block;
     width: 800px;
     text-align: center;
-    
 }
-.form{
+.form {
     padding: 20px;
 }
 
-h3{
+h3 {
     padding-top: 20px;
     text-align: center;
 }
 
-.avatar{
+.avatar {
     display: inline-block;
     align-items: center;
+}
+.form_button {
+    padding-bottom: 30px;
+}
+.form_button .css-jh47zj-MuiButtonBase-root-MuiButton-root {
+    margin-right: 40px;
+    margin-left: 40px;
 }
