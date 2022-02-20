@@ -22,7 +22,8 @@ export class UsersController {
         response: Response,
         next: NextFunction
     ) {
-        return this.usersRepository.findOne(request.params.id)
+        const user = this.usersRepository.findOne(request.params.id)
+        return user
     }
 
     //Регистрация нового пользователя
@@ -78,7 +79,6 @@ export class UsersController {
             }
 
             // формируем токен
-
             const token = jwt.sign(
                 { userId: user.id },
                 process.env.JWT_SECRET,
@@ -108,5 +108,42 @@ export class UsersController {
     async remove(request: Request, response: Response, next: NextFunction) {
         let userToRemove = await this.usersRepository.findOne(request.params.id)
         await this.usersRepository.remove(userToRemove)
+    }
+
+    async updateUser(request: Request, response: Response, next: NextFunction) {
+        try {
+            const {
+                id,
+                userName,
+                realName,
+                company,
+                website,
+                phone,
+                address,
+                avatar,
+            } = request.body
+
+            //находим нужного пользователя
+            const candidate = await this.usersRepository.findOne({
+                id: id,
+            })
+
+            candidate.userName = userName
+            candidate.realName = realName
+            candidate.company = company
+            candidate.website = website
+            candidate.phone = phone
+            candidate.address = address
+
+            // сохраняем изменения пользователя
+            this.usersRepository.save(candidate)
+            return response
+                .status(201)
+                .json({ message: 'Данные пользователя обновлены' })
+        } catch (err) {
+            return response
+                .status(500)
+                .json({ message: 'Что-то пошло не так, попробуйте еще раз' })
+        }
     }
 }

@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
-import { useFormik } from 'formik'
-import * as Yup from 'yup'
-
-import { useHttp } from '../../Hooks/http.hook'
 
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
@@ -13,8 +9,11 @@ import MuiAlert from '@mui/material/Alert'
 
 import './RegisterForm.style.css'
 
-function RegisterForm() {
-    const { loading, error, request, clearError } = useHttp()
+function RegisterForm(props) {
+    const formik = props.formik
+    const error = props.error
+    const loading = props.loading
+    const clearError = props.clearError
     const Alert = React.forwardRef(function Alert(props, ref) {
         return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
     })
@@ -31,42 +30,6 @@ function RegisterForm() {
     useEffect(() => {
         if (error) setOpen(true)
     }, [error])
-
-    const formik = useFormik({
-        initialValues: {
-            email: '',
-            password: '',
-            confirmPassword: '',
-        },
-        validationSchema: Yup.object({
-            email: Yup.string()
-                .email('Invalid email address')
-                .required('Required'),
-            password: Yup.string()
-                .min(6, 'Must be 6 characters or more')
-                .required('Required'),
-            confirmPassword: Yup.string()
-                .oneOf([Yup.ref('password')], 'Password mismatch')
-                .required('Required'),
-        }),
-        onSubmit: (values) => {
-            registerHandler(values.email, values.password)
-        },
-    })
-
-    const registerHandler = async (email, password) => {
-        try {
-            const data = await request(
-                'http://localhost:5000/auth/register',
-                'POST',
-                { email, password },
-                { credentials: true }
-            )
-            console.log(data)
-        } catch (e) {
-            console.log(e.message)
-        }
-    }
 
     return (
         <div className="main">

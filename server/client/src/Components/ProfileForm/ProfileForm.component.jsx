@@ -1,56 +1,16 @@
 import React from 'react'
-import Button from '../Button/Button.component'
-
-import { useFormik } from 'formik'
-import * as Yup from 'yup'
-import { useHttp } from '../../Hooks/http.hook'
-
+import { NavLink } from 'react-router-dom'
 import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Avatar from '@mui/material/Avatar'
 
 import './ProfileForm.style.css'
 
 function ProfileForm(props) {
-    //console.log(props.user);
-    console.log(props.user.email)
-    const { /*loading, error,*/ request /*, clearError*/ } = useHttp()
-
-    const formik = useFormik({
-        initialValues: {
-            UserName: '',
-            Name: '',
-            Company: '',
-            Website: '',
-            Phone: '',
-            Address: '',
-            Picture: '',
-        },
-        validationSchema: Yup.object({
-            UserName: Yup.string().min(3, 'Must be 3 characters or more'),
-            Name: Yup.string().min(3, 'Must be 3 characters or more'),
-            Company: Yup.string(),
-            Website: Yup.string().url(),
-            Phone: Yup.string(),
-            Address: Yup.string(),
-        }),
-        onSubmit: (values) => {
-            profileUserHandler(values)
-        },
-    })
-    const profileUserHandler = async (email, password) => {
-        try {
-            await request(
-                'http://localhost:5000/auth/register',
-                'POST',
-                { email, password },
-                { credentials: true }
-            )
-        } catch (e) {
-            console.log(e.message)
-        }
-    }
-
+    const formik = props.formik
+    const loading = props.loading
+    const handleFileInputChange = props.handleFileInputChange
     return (
         <div className="profile">
             <form onSubmit={formik.handleSubmit}>
@@ -66,17 +26,19 @@ function ProfileForm(props) {
                     <h3>MY PROFILE</h3>
                     <div className="avatar">
                         <Avatar
-                            alt={props.user.userName}
-                            src={props.user.avatar}
-                            sx={{ width: 56, height: 56 }}
+                            alt={formik.values.userName}
+                            src={props.previewSource || formik.values.avatar}
+                            sx={{ width: 60, height: 60 }}
                         />
                     </div>
                     <div className="form">
                         <TextField
                             id="standard-helperText"
-                            label="UserName"
-                            value={formik.values.UserName}
+                            label="userName"
+                            name="userName"
+                            value={formik.values.userName}
                             onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
                             helperText="Enter your username"
                             variant="standard"
                         />
@@ -84,8 +46,10 @@ function ProfileForm(props) {
                         <TextField
                             id="standard-helperText"
                             label="Name"
-                            value={formik.values.Name}
+                            name="realName"
+                            value={formik.values.realName}
                             onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
                             helperText="Enter your name"
                             variant="standard"
                         />
@@ -93,8 +57,10 @@ function ProfileForm(props) {
                         <TextField
                             id="standard-helperText"
                             label="Company name"
-                            value={formik.values.Company}
+                            name="company"
+                            value={formik.values.company}
                             onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
                             helperText="Enter your company name"
                             variant="standard"
                         />
@@ -102,8 +68,10 @@ function ProfileForm(props) {
                         <TextField
                             id="standard-helperText"
                             label="Website"
-                            value={formik.values.Website}
+                            name="website"
+                            value={formik.values.website}
                             onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
                             helperText="Enter your website"
                             variant="standard"
                         />
@@ -111,8 +79,10 @@ function ProfileForm(props) {
                         <TextField
                             id="standard-helperText"
                             label="Phone"
-                            value={formik.values.Phone}
+                            name="phone"
+                            value={formik.values.phone}
                             onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
                             helperText="Enter your phone number"
                             variant="standard"
                         />
@@ -120,26 +90,47 @@ function ProfileForm(props) {
                         <TextField
                             id="standard-textarea"
                             label="Address"
-                            value={formik.values.Address}
+                            name="address"
+                            value={formik.values.address}
                             onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
                             multiline
                             variant="standard"
                         />
 
                         <TextField
                             id="standard-helperText"
-                            label="Avatar"
-                            value={formik.values.Phone}
-                            onChange={formik.handleChange}
+                            label="Picture"
+                            name="avatar"
+                            value={formik.values.avatar}
+                            onChange={handleFileInputChange}
+                            onBlur={formik.handleBlur}
                             helperText="Enter your picture"
                             variant="standard"
                             type="file"
                         />
+                        {props.previewSource && (
+                            <img
+                                src={props.previewSource}
+                                alt="chosen"
+                                style={{ height: '100px' }}
+                            />
+                        )}
                     </div>
 
                     <div className="form_button">
-                        <Button type="submit">SUBMIT</Button>
-                        <Button type="reset">CANCEL</Button>
+                        <Button
+                            variant="contained"
+                            disabled={loading}
+                            type="submit"
+                        >
+                            SUBMIT
+                        </Button>
+                        <NavLink to="/">
+                            <Button variant="contained" type="button">
+                                CANCEL
+                            </Button>
+                        </NavLink>
                     </div>
                 </Box>
             </form>

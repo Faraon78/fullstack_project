@@ -9,6 +9,7 @@ export function* fetchCurrentUserAsync({ payload }) {
     try {
         let data = yield call(fetch, `http://localhost:5000/users/${payload}`)
         data = yield data.json()
+        console.log('SAGA: ', data)
         yield put(fetchCurrentUserSuccess(data))
     } catch (error) {
         yield put(fetchCurrentUserFailure())

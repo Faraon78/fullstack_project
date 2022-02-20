@@ -4,9 +4,15 @@ import { PostsController } from './controller/PostsController'
 export const Routes = [
     {
         method: 'get',
-        route: '/getposts',
-        controller: PostsController,
-        action: 'all',
+        route: '/users',
+        controller: UsersController,
+        action: 'findAllUsers',
+    },
+    {
+        method: 'get',
+        route: '/users/:id',
+        controller: UsersController,
+        action: 'findOneUser',
     },
     {
         method: 'post',
@@ -21,21 +27,22 @@ export const Routes = [
         action: 'login',
     },
     {
-        method: 'get',
-        route: '/users/:id',
-        controller: UsersController,
-        action: 'findOneUser',
-    },
-    {
-        method: 'post',
-        route: '/users',
-        controller: UsersController,
-        action: 'save',
-    },
-    {
         method: 'delete',
         route: '/users/:id',
         controller: UsersController,
         action: 'remove',
+    },
+    {
+        method: 'post',
+        route: '/updateUser',
+        controller: UsersController,
+        action: 'updateUser',
+    },
+
+    {
+        method: 'get',
+        route: '/getposts',
+        controller: PostsController,
+        action: 'all',
     },
 ]

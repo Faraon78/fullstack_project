@@ -36,10 +36,7 @@ export const useAuth = () => {
         localStorage.removeItem(storageName)
         dispatch(updateCurrentUser({}))
         dispatch(userSetToken(null))
-        console.log(localStorage.getItem(storageName))
-        console.log('token ', token)
-        console.log('завершили logout')
-    }, [dispatch, token])
+    }, [dispatch, setToken])
 
     useEffect(() => {
         const data = JSON.parse(localStorage.getItem(storageName))

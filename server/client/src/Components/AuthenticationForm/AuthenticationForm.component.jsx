@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useFormik } from 'formik'
-import * as Yup from 'yup'
 import { NavLink } from 'react-router-dom'
-
-import { useHttp } from '../../Hooks/http.hook'
-import { useAuth } from '../../Hooks/auth.hook'
 
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
@@ -14,10 +9,10 @@ import MuiAlert from '@mui/material/Alert'
 
 import './AuthenticationForm.style.css'
 
-function AuthenticationForm() {
-    const { login } = useAuth()
-    const { loading, error, request, clearError } = useHttp()
+function AuthenticationForm(props) {
     // функция для вывода сообщения об ошибке
+    const error = props.error
+    const formik = props.formik
     const Alert = React.forwardRef(function Alert(props, ref) {
         return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
     })
@@ -27,45 +22,12 @@ function AuthenticationForm() {
             return
         }
         setOpen(false)
-        clearError()
+        props.clearError()
     }
 
     useEffect(() => {
         if (error) setOpen(true)
     }, [error])
-    // описываем форму ввода
-    const formik = useFormik({
-        initialValues: {
-            email: '',
-            password: '',
-        },
-        validationSchema: Yup.object({
-            email: Yup.string()
-                .email('Invalid email address')
-                .required('Required'),
-            password: Yup.string()
-                .min(6, 'Must be 6 characters or more')
-                .required('Required'),
-        }),
-        onSubmit: (values) => {
-            loginHandler(values.email, values.password)
-        },
-    })
-
-    const loginHandler = async (email, password) => {
-        try {
-            const data = await request(
-                ' http://localhost:5000/auth/login',
-                'POST',
-                { email, password },
-                { credentials: 'true' }
-            )
-
-            login(data.token, data.userId)
-        } catch (e) {
-            console.log(e.message)
-        }
-    }
 
     return (
         <div className="wrapper-auth">
@@ -126,7 +88,7 @@ function AuthenticationForm() {
                         <Button
                             variant="contained"
                             className="log-btn"
-                            disabled={loading}
+                            disabled={props.loading}
                             type="submit"
                         >
                             Login

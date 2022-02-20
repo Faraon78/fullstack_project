@@ -19,7 +19,7 @@ h3 {
 .form_button {
     padding-bottom: 30px;
 }
-.form_button .css-jh47zj-MuiButtonBase-root-MuiButton-root {
+.form_button .MuiButton-root {
     margin-right: 40px;
     margin-left: 40px;
 }

@@ -10,6 +10,8 @@
         "@testing-library/jest-dom": "^5.16.1",
         "@testing-library/react": "^12.1.2",
         "@testing-library/user-event": "^13.5.0",
+        "cloudinary-core": "^2.12.3",
+        "cloudinary-react": "^1.7.1",
         "cookies-js": "^1.2.3",
         "formik": "^2.2.9",
         "react": "^17.0.2",
