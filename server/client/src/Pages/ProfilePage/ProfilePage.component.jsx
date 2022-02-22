@@ -20,7 +20,9 @@ function ProfilePage() {
     useEffect(() => {
         dispatch(fetchCurrentUserStart(id))
     }, [dispatch, id])
-    const user = useSelector((state) => state.currentUser.currentUser)
+    const user = useSelector((state) => state.currentUser.currentUser);
+    console.log(user);
+
     const initialValues = {
         userName: `${user.userName}`,
         realName: `${user.realName}`,
@@ -28,7 +30,7 @@ function ProfilePage() {
         website: `${user.website}`,
         phone: `${user.phone}`,
         address: `${user.address}`,
-        avatar: '',
+        avatar: `${user.avatar}`,
     }
 
     const formik = useFormik({
@@ -52,31 +54,12 @@ function ProfilePage() {
                 website: values.website,
                 phone: values.phone,
                 address: values.address,
+                avatar:{data:previewSource}
             }
-            profileAvatarHandler(previewSource)
             profileUserHandler(updateUser)
         },
     })
-    const profileAvatarHandler = async (previewSource) => {
-        console.log('Запустили profileAvatarHandler')
-        const uploadImage = (base64EncodedImage) => {
-            console.log(base64EncodedImage)
-        }
-        if (previewSource) {
-            uploadImage(previewSource)
-        }
-
-        /* try {
-            await request(
-                'http://localhost:5000/avatar',
-                'POST',
-                 base64EncodedImage, 
-                { credentials: true }
-            )
-        } catch (e) {
-            console.log(e.message)
-        }*/
-    }
+    
     const handleFileInputChange = (e) => {
         const file = e.target.files[0]
         previewFile(file)
@@ -92,7 +75,7 @@ function ProfilePage() {
     const profileUserHandler = async (updateUser) => {
         try {
             await request(
-                'http://localhost:5000/updateUser',
+                `http://localhost:5000/users/${id}`,
                 'POST',
                 updateUser,
                 { credentials: true }

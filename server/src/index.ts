@@ -3,7 +3,6 @@ import { createConnection } from 'typeorm'
 import * as express from 'express'
 import * as bodyParser from 'body-parser'
 import * as cors from 'cors'
-import * as cookieParser from 'cookie-parser'
 
 import { Request, Response } from 'express'
 import { Routes } from './routes'
@@ -11,15 +10,16 @@ import { Routes } from './routes'
 createConnection()
     .then(async (connection) => {
         const app = express()
-        app.use(bodyParser.json())
+        app.use(bodyParser.json({ limit: "50mb" }))
         app.use(
             cors({
                 credentials: true,
                 origin: '*',
             })
         )
-
-        app.use(cookieParser())
+        
+       // app.use(express.json({limit: '50mb'}));
+        app.use(express.urlencoded({ limit: '50mb', extended: true}));
 
         // register express routes from defined application routes
 

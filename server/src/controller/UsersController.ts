@@ -2,6 +2,8 @@ import { getRepository, getConnection } from 'typeorm'
 import * as bcrypt from 'bcryptjs'
 import * as jwt from 'jsonwebtoken'
 
+const cloudinary = require('cloudinary').v2;
+
 import { NextFunction, Request, Response } from 'express'
 import { Users } from '../entity/Users'
 import { access } from 'fs'
@@ -85,14 +87,6 @@ export class UsersController {
                 { expiresIn: '1h' }
             )
 
-            // заголовки для cookie
-            /* const cookieOptions ={                
-                    maxAge: 900000,
-                    //sameSite: false,
-                    httpOnly: true,                        
-                    secure: true,       
-            }*/
-
             response.status(200).json({
                 token,
                 userId: user.id,
@@ -105,12 +99,17 @@ export class UsersController {
         }
     }
 
-    async remove(request: Request, response: Response, next: NextFunction) {
+    /*async remove(request: Request, response: Response, next: NextFunction) {
         let userToRemove = await this.usersRepository.findOne(request.params.id)
         await this.usersRepository.remove(userToRemove)
-    }
+    }*/
 
     async updateUser(request: Request, response: Response, next: NextFunction) {
+        cloudinary.config({
+            cloud_name: process.env.CLOUDINARY_NAME,
+            api_key: process.env.CLOUDINARY_API_KEY,
+            api_secret: process.env.CLOUDINARY_API_SECRET,
+        }) 
         try {
             const {
                 id,
@@ -120,14 +119,22 @@ export class UsersController {
                 website,
                 phone,
                 address,
-                avatar,
-            } = request.body
-
+                avatar
+            } = request.body            
+            
             //находим нужного пользователя
             const candidate = await this.usersRepository.findOne({
                 id: id,
             })
-
+            // сохраняем изображение в cloudinary
+            if (avatar.data){
+            const uploadedResponse = await cloudinary.uploader.upload(avatar.data, {
+                upload_preset: 'upload'
+            })
+            console.log(uploadedResponse.url)
+            candidate.avatar=uploadedResponse.url
+            }
+            
             candidate.userName = userName
             candidate.realName = realName
             candidate.company = company
@@ -139,11 +146,11 @@ export class UsersController {
             this.usersRepository.save(candidate)
             return response
                 .status(201)
-                .json({ message: 'Данные пользователя обновлены' })
+                .json({ message: 'User updated' })
         } catch (err) {
             return response
                 .status(500)
-                .json({ message: 'Что-то пошло не так, попробуйте еще раз' })
+                .json({ message: 'Something went wrong, try again' })
         }
     }
-}
+}   

@@ -14,7 +14,7 @@ export class Comments {
     name: string
 
     @ManyToOne(() => Users, (users) => users.id)
-    email_commentator: string
+    emailCommentator: string
 
     @Column({ type: 'character varying' })
     body: string

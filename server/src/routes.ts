@@ -26,22 +26,28 @@ export const Routes = [
         controller: UsersController,
         action: 'login',
     },
-    {
+    /*{
         method: 'delete',
         route: '/users/:id',
         controller: UsersController,
         action: 'remove',
+    },*/
+    {
+        method: 'post',
+        route: '/users/:id',
+        controller: UsersController,
+        action: 'updateUser',
     },
     {
         method: 'post',
-        route: '/updateUser',
+        route: '/avatarUser',
         controller: UsersController,
-        action: 'updateUser',
+        action: 'avatarUser',
     },
 
     {
         method: 'get',
-        route: '/getposts',
+        route: '/posts',
         controller: PostsController,
         action: 'all',
     },

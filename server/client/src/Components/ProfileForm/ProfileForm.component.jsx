@@ -33,7 +33,7 @@ function ProfileForm(props) {
                     </div>
                     <div className="form">
                         <TextField
-                            id="standard-helperText"
+                            //id="standard-helperText"
                             label="userName"
                             name="userName"
                             value={formik.values.userName}
@@ -44,7 +44,7 @@ function ProfileForm(props) {
                         />
 
                         <TextField
-                            id="standard-helperText"
+                            //id="standard-helperText"
                             label="Name"
                             name="realName"
                             value={formik.values.realName}
@@ -55,7 +55,7 @@ function ProfileForm(props) {
                         />
 
                         <TextField
-                            id="standard-helperText"
+                            //id="standard-helperText"
                             label="Company name"
                             name="company"
                             value={formik.values.company}
@@ -66,7 +66,7 @@ function ProfileForm(props) {
                         />
 
                         <TextField
-                            id="standard-helperText"
+                            //id="standard-helperText"
                             label="Website"
                             name="website"
                             value={formik.values.website}
@@ -77,7 +77,7 @@ function ProfileForm(props) {
                         />
 
                         <TextField
-                            id="standard-helperText"
+                            //id="standard-helperText"
                             label="Phone"
                             name="phone"
                             value={formik.values.phone}
@@ -99,10 +99,9 @@ function ProfileForm(props) {
                         />
 
                         <TextField
-                            id="standard-helperText"
+                            id="file_field"
                             label="Picture"
                             name="avatar"
-                            value={formik.values.avatar}
                             onChange={handleFileInputChange}
                             onBlur={formik.handleBlur}
                             helperText="Enter your picture"
