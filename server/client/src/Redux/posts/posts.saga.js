@@ -4,7 +4,7 @@ import { fetchPostsSuccess, fetchPostsFailure } from './posts.actions'
 
 export function* fetchPostsAsync() {
     try {
-        let data = yield call(fetch, 'http://localhost:5000/getposts')
+        let data = yield call(fetch, 'http://localhost:5000/posts')
         data = yield data.json()
         yield put(fetchPostsSuccess(data))
     } catch (error) {

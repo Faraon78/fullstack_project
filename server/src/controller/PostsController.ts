@@ -1,29 +1,31 @@
-import { getRepository } from 'typeorm'
 import { NextFunction, Request, Response } from 'express'
-import { Posts } from '../entity/Posts'
-
+import { PostsService } from '../service/PostsService'
 export class PostsController {
-    private postsRepository = getRepository(Posts)
+    PostServiceInstance = new PostsService()
 
-    async all(request: Request, response: Response, next: NextFunction) {
-        return this.postsRepository.find()
-    }
-    async allforUser(request: Request, response: Response, next: NextFunction) {
-        return this.postsRepository.find({
-            where: { userId: request.params.userId },
-        })
-    }
-
-    async one(request: Request, response: Response, next: NextFunction) {
-        return this.postsRepository.findOne(request.params.id)
+    async findAllPosts(
+        request: Request,
+        response: Response,
+        next: NextFunction
+    ) {
+        return this.PostServiceInstance.findAllPosts()
     }
 
-    async save(request: Request, response: Response, next: NextFunction) {
-        return this.postsRepository.save(request.body)
+    async savePost(request: Request, response: Response, next: NextFunction) {
+        try {
+            const { userId, title, body } = request.body
+
+            this.PostServiceInstance.savePost(userId, title, body)
+            return response.status(201).json({ message: 'Пост создан' })
+        } catch (err) {
+            return response
+                .status(500)
+                .json({ message: 'Что-то пошло не так, попробуйте еще раз' })
+        }
     }
 
-    async remove(request: Request, response: Response, next: NextFunction) {
-        let postToRemove = await this.postsRepository.findOne(request.params.id)
-        await this.postsRepository.remove(postToRemove)
+    async removePost(request: Request, response: Response, next: NextFunction) {
+        const id = request.params.id
+        this.PostServiceInstance.removePost(+id)
     }
 }

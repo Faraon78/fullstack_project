@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react'
-import { fetchUsersStart } from '../../Redux/users/users.actions'
-import { useDispatch, useSelector } from 'react-redux'
+import React from 'react'
+
 import { Link } from 'react-router-dom'
 
 import List from '@mui/material/List'
@@ -13,12 +12,8 @@ import Typography from '@mui/material/Typography'
 
 import './UserList.style.css'
 
-function UserList() {
-    const dispatch = useDispatch()
-    useEffect(() => {
-        dispatch(fetchUsersStart())
-    }, [dispatch])
-    const users = useSelector((state) => state.users.users)
+function UserList(props) {
+    const users = props.users
 
     if (!users.length) {
         return <div>NO USERS</div>
@@ -31,10 +26,10 @@ function UserList() {
                 <Link to={`/users/${user.id}`} key={user.id}>
                     <ListItem alignItems="flex-start" className="link">
                         <ListItemAvatar>
-                            <Avatar alt={user.username} />
+                            <Avatar alt={user.userName} />
                         </ListItemAvatar>
                         <ListItemText
-                            primary={'Username: ' + user.username}
+                            primary={'Username: ' + user.userName || user.email}
                             secondary={
                                 <React.Fragment>
                                     <Typography
@@ -43,11 +38,11 @@ function UserList() {
                                         variant="body2"
                                         color="text.primary"
                                     >
-                                        {'User: ' + user.name}
+                                        {'User: ' + user.realName}
                                     </Typography>
                                     {'  e-mail: ' + user.email}
                                     <br />
-                                    {'city: ' + user.address.city}
+                                    {'city: ' + user.address}
                                 </React.Fragment>
                             }
                         />

@@ -25,7 +25,6 @@ function AuthPage() {
                 .required('Required'),
         }),
         onSubmit: (values) => {
-            console.log(values)
             loginHandler(values.email, values.password)
         },
     })

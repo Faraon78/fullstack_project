@@ -10,7 +10,6 @@ import { config } from '../config'
 export const useAuth = () => {
     const [token, setToken] = useState(null)
     const [userId, setUserId] = useState(null)
-    const storageName = 'userData'
     const dispatch = useDispatch()
 
     const login = useCallback(
@@ -33,13 +32,13 @@ export const useAuth = () => {
     const logout = useCallback(() => {
         setToken(null)
         setUserId(null)
-        localStorage.removeItem(storageName)
+        localStorage.removeItem(config.STORAGENAME)
         dispatch(updateCurrentUser({}))
         dispatch(userSetToken(null))
     }, [dispatch, setToken])
 
     useEffect(() => {
-        const data = JSON.parse(localStorage.getItem(storageName))
+        const data = JSON.parse(localStorage.getItem(config.STORAGENAME))
 
         if (data && data.token) {
             login(data.token, data.userId)

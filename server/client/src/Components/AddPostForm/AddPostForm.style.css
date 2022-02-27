@@ -1,0 +1,16 @@
+.wrapper-post {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+.error-post {
+    position: absolute;
+    text-align: center;
+    color: red;
+    width: 600px;
+    margin-top: 3px;
+}
+.field {
+    margin-left: 20px;
+    margin-right: 20px;
+}

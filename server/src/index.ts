@@ -10,16 +10,15 @@ import { Routes } from './routes'
 createConnection()
     .then(async (connection) => {
         const app = express()
-        app.use(bodyParser.json({ limit: "50mb" }))
+        app.use(bodyParser.json({ limit: '50mb' }))
         app.use(
             cors({
                 credentials: true,
                 origin: '*',
             })
         )
-        
-       // app.use(express.json({limit: '50mb'}));
-        app.use(express.urlencoded({ limit: '50mb', extended: true}));
+
+        app.use(express.urlencoded({ limit: '50mb', extended: true }))
 
         // register express routes from defined application routes
 

@@ -1,16 +1,34 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Avatar from '@mui/material/Avatar'
+import Snackbar from '@mui/material/Snackbar'
+import MuiAlert from '@mui/material/Alert'
 
 import './ProfileForm.style.css'
 
 function ProfileForm(props) {
     const formik = props.formik
     const loading = props.loading
+    const message = props.message
     const handleFileInputChange = props.handleFileInputChange
+    const Alert = React.forwardRef(function Alert(props, ref) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
+    })
+    const [open, setOpen] = useState(false)
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return
+        }
+
+        setOpen(false)
+    }
+
+    useEffect(() => {
+        if (message) setOpen(true)
+    }, [message])
     return (
         <div className="profile">
             <form onSubmit={formik.handleSubmit}>
@@ -33,7 +51,6 @@ function ProfileForm(props) {
                     </div>
                     <div className="form">
                         <TextField
-                            //id="standard-helperText"
                             label="userName"
                             name="userName"
                             value={formik.values.userName}
@@ -44,7 +61,6 @@ function ProfileForm(props) {
                         />
 
                         <TextField
-                            //id="standard-helperText"
                             label="Name"
                             name="realName"
                             value={formik.values.realName}
@@ -55,7 +71,6 @@ function ProfileForm(props) {
                         />
 
                         <TextField
-                            //id="standard-helperText"
                             label="Company name"
                             name="company"
                             value={formik.values.company}
@@ -66,7 +81,6 @@ function ProfileForm(props) {
                         />
 
                         <TextField
-                            //id="standard-helperText"
                             label="Website"
                             name="website"
                             value={formik.values.website}
@@ -77,7 +91,6 @@ function ProfileForm(props) {
                         />
 
                         <TextField
-                            //id="standard-helperText"
                             label="Phone"
                             name="phone"
                             value={formik.values.phone}
@@ -133,6 +146,18 @@ function ProfileForm(props) {
                     </div>
                 </Box>
             </form>
+            {{ message } && (
+                <Snackbar
+                    open={open}
+                    anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                    autoHideDuration={4000}
+                    onClose={handleClose}
+                >
+                    <Alert severity="info" sx={{ width: '100%' }}>
+                        {message}
+                    </Alert>
+                </Snackbar>
+            )}
         </div>
     )
 }

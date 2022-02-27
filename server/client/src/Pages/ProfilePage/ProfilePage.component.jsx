@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { useHttp } from '../../Hooks/http.hook'
+import { config } from '../../config'
 
 import ProfileForm from '../../Components/ProfileForm/ProfileForm.component'
 
@@ -12,16 +13,16 @@ function ProfilePage() {
     const dispatch = useDispatch()
     const { request, loading } = useHttp()
     const [previewSource, setPreviewSource] = useState()
+    const [message, setMessage] = useState('')
 
-    const data = localStorage.getItem('userData')
+    const data = localStorage.getItem(config.STORAGENAME)
     const id = JSON.parse(data).userId
 
     //запускаем загрузку из БД всех данных пользователя
     useEffect(() => {
         dispatch(fetchCurrentUserStart(id))
     }, [dispatch, id])
-    const user = useSelector((state) => state.currentUser.currentUser);
-    console.log(user);
+    const user = useSelector((state) => state.currentUser.currentUser)
 
     const initialValues = {
         userName: `${user.userName}`,
@@ -36,8 +37,8 @@ function ProfilePage() {
     const formik = useFormik({
         initialValues: initialValues,
         validationSchema: Yup.object({
-            userName: Yup.string().min(3, 'Must be 3 characters or more'),
-            realName: Yup.string().min(3, 'Must be 3 characters or more'),
+            userName: Yup.string(),
+            realName: Yup.string(),
             company: Yup.string(),
             website: Yup.string(),
             phone: Yup.string(),
@@ -47,19 +48,14 @@ function ProfilePage() {
         enableReinitialize: true,
         onSubmit: (values) => {
             const updateUser = {
+                ...values,
                 id: id,
-                userName: values.userName,
-                realName: values.realName,
-                company: values.company,
-                website: values.website,
-                phone: values.phone,
-                address: values.address,
-                avatar:{data:previewSource}
+                avatar: { data: previewSource },
             }
             profileUserHandler(updateUser)
         },
     })
-    
+
     const handleFileInputChange = (e) => {
         const file = e.target.files[0]
         previewFile(file)
@@ -76,12 +72,13 @@ function ProfilePage() {
         try {
             await request(
                 `http://localhost:5000/users/${id}`,
-                'POST',
+                'PATCH',
                 updateUser,
                 { credentials: true }
             )
+            setMessage('Profile succsesful update')
         } catch (e) {
-            console.log(e.message)
+            setMessage('Something went wrong, try again')
         }
     }
 
@@ -93,6 +90,7 @@ function ProfilePage() {
                 loading={loading}
                 handleFileInputChange={handleFileInputChange}
                 previewSource={previewSource}
+                message={message}
             />
         </div>
     )

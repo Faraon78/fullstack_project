@@ -10,3 +10,6 @@ a:visited {
 .link:hover {
     background-color: lightsteelblue;
 }
+.noPosts {
+    font-weight: bold;
+}

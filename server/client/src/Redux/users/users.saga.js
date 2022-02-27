@@ -4,10 +4,7 @@ import { fetchUsersSuccess, fetchUsersFailure } from './users.actions'
 
 export function* fetchUsersAsync() {
     try {
-        let data = yield call(
-            fetch,
-            'https://jsonplaceholder.typicode.com/users'
-        )
+        let data = yield call(fetch, 'http://localhost:5000/users')
         data = yield data.json()
         yield put(fetchUsersSuccess(data))
     } catch (error) {

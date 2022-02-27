@@ -33,22 +33,22 @@ export const Routes = [
         action: 'remove',
     },*/
     {
-        method: 'post',
+        method: 'patch',
         route: '/users/:id',
         controller: UsersController,
         action: 'updateUser',
-    },
-    {
-        method: 'post',
-        route: '/avatarUser',
-        controller: UsersController,
-        action: 'avatarUser',
     },
 
     {
         method: 'get',
         route: '/posts',
         controller: PostsController,
-        action: 'all',
+        action: 'findAllPosts',
+    },
+    {
+        method: 'post',
+        route: '/savePost',
+        controller: PostsController,
+        action: 'savePost',
     },
 ]

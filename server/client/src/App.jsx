@@ -15,6 +15,7 @@ import AuthPage from './Pages/AuthPage/AuthPage.component'
 import ProfilePage from './Pages/ProfilePage/ProfilePage.component'
 import NavigateMenu from './Components/NavigateMenu/NavigateMenu.component'
 import RegisterPage from './Pages/RegisterPage/RegisterPage.component'
+import AddPostPage from './Pages/AddPostPage/AddPostPage.component'
 
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
@@ -58,7 +59,6 @@ function App() {
 
                 <Routes>
                     <Route
-                        exact
                         path="/login"
                         element={
                             <PublicRoute isAuthenticated={isAuthenticated}>
@@ -112,6 +112,14 @@ function App() {
                         element={
                             <PrivateRoute isAuthenticated={isAuthenticated}>
                                 <ProfilePage />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/addpost"
+                        element={
+                            <PrivateRoute isAuthenticated={isAuthenticated}>
+                                <AddPostPage />
                             </PrivateRoute>
                         }
                     />

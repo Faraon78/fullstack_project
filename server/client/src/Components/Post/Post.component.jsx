@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch /*, useSelector */ } from 'react-redux'
 
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
@@ -10,6 +10,11 @@ import Divider from '@mui/material/Divider'
 import ListItemText from '@mui/material/ListItemText'
 
 import { fetchCommentsStart } from '../../Redux/comments/comments.actions'
+import {
+    selectAllPosts,
+    selectAllUsers,
+    selectAllComments,
+} from '../../Redux/store/selectors'
 
 import './Post.style.css'
 
@@ -19,13 +24,16 @@ function Post(props) {
         dispatch(fetchCommentsStart(props.id))
     }, [dispatch, props.id])
 
-    const posts = useSelector((state) => state.posts.posts)
+    //const posts = useSelector((state) => state.posts.posts)
+    const posts = selectAllPosts
 
     const post = posts.find((post) => +post.id === +props.id)
-    const users = useSelector((state) => state.users.users)
+    //const users = useSelector((state) => state.users.users)
+    const users = selectAllUsers
 
     const user = users.find((user) => +user.id === +post.userId)
-    const comments = useSelector((state) => state.comments.comments)
+    //const comments = useSelector((state) => state.comments.comments)
+    const comments = selectAllComments
 
     return (
         <div className="content-pages">
