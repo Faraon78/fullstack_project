@@ -1,22 +1,22 @@
-import React from 'react'
+import React from 'react';
 
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import Divider from '@mui/material/Divider'
-import ListItemText from '@mui/material/ListItemText'
-import ListItemAvatar from '@mui/material/ListItemAvatar'
-import Avatar from '@mui/material/Avatar'
-import Typography from '@mui/material/Typography'
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Divider from '@mui/material/Divider';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
 
-import './UserList.style.css'
+import './UserList.style.css';
 
 function UserList(props) {
-    const users = props.users
+    const users = props.users;
 
     if (!users.length) {
-        return <div>NO USERS</div>
+        return <div>NO USERS</div>;
     }
     return (
         <List
@@ -51,7 +51,7 @@ function UserList(props) {
                 </Link>
             ))}
         </List>
-    )
+    );
 }
 
-export default UserList
+export default UserList;

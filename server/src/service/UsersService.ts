@@ -1,79 +1,79 @@
-import { getRepository } from 'typeorm'
-import * as bcrypt from 'bcryptjs'
-import * as jwt from 'jsonwebtoken'
-const cloudinary = require('cloudinary').v2
+import { getRepository } from 'typeorm';
+import * as bcrypt from 'bcryptjs';
+import * as jwt from 'jsonwebtoken';
+const cloudinary = require('cloudinary').v2;
 
-import { Users } from '../entity/Users'
+import { Users } from '../entity/Users';
 
 export class UsersService {
-    private usersRepository = getRepository(Users)
+    private usersRepository = getRepository(Users);
 
     async findAllUsersDB() {
         try {
-            return this.usersRepository.find()
+            return this.usersRepository.find();
         } catch (err) {
-            return err
+            return err;
         }
     }
 
     async findOneUserDB(id: number) {
         try {
-            return this.usersRepository.findOne({ id: id })
+            return this.usersRepository.findOne({ id: id });
         } catch (err) {
-            return err
+            return err;
         }
     }
 
     async saveUserDB(email: string, password: string) {
         try {
-            //проверяем есть ли уже такой пользователь
+            //check if there is such a user
             const candidate = await this.usersRepository.findOne({
                 email: email,
-            })
+            });
 
             if (candidate) {
-                throw new Error('Такой пользователь уже существует')
+                throw new Error('This user already exists');
             }
-            //шифруем пароль
-            const hashedPassword = await bcrypt.hash(password, 12)
+            //encrypt the password
+            const hashedPassword = await bcrypt.hash(password, 12);
 
-            //создаем нового Usera
-            const newUser = new Users()
-            newUser.email = email
-            newUser.password = hashedPassword
+            //create a new User
+            const newUser = new Users();
+            newUser.email = email;
+            newUser.password = hashedPassword;
 
-            // сохраняем нового пользователя
-            return this.usersRepository.save(newUser)
+            // save new user
+            return this.usersRepository.save(newUser);
         } catch (err) {
-            return err
+            return err;
         }
     }
 
     async loginDB(email: string, password: string) {
         try {
-            // находим user в базе по email
-            const user = await this.usersRepository.findOne({ email: email })
+            // find user in the database by email
+            const user = await this.usersRepository.findOne({ email: email });
 
             if (!user) {
-                throw new Error('Пользователь не найден')
+                throw new Error('User is not found');
             }
-            // проверяем правильность пароля
-            const isMatch = await bcrypt.compare(password, user.password)
+            // check if the password is correct
+            const isMatch = await bcrypt.compare(password, user.password);
 
             if (!isMatch) {
-                throw new Error('Неверный пароль')
+                throw new Error('Invalid password');
             }
 
-            // формируем токен
+            // create a token
             const token = jwt.sign(
                 { userId: user.id },
                 process.env.JWT_SECRET,
                 { expiresIn: '1h' }
-            )
-            const userId = user.id
-            return { token: token, userId: userId }
+            );
+            const userId = user.id;
+            return { token: token, userId: userId };
         } catch (err) {
-            return err
+            return err;
         }
     }
     async updateUserDB(request: any) {
@@ -87,39 +87,39 @@ export class UsersService {
                 phone,
                 address,
                 avatar,
-            } = request.body
+            } = request.body;
             cloudinary.config({
                 cloud_name: process.env.CLOUDINARY_NAME,
                 api_key: process.env.CLOUDINARY_API_KEY,
                 api_secret: process.env.CLOUDINARY_API_SECRET,
-            })
+            });
 
-            //находим нужного пользователя
+            //find the right user
             const candidate = await this.usersRepository.findOne({
                 id: id,
-            })
-            // сохраняем изображение в cloudinary
+            });
+            // save image to cloudinary
             if (avatar.data) {
                 const uploadedResponse = await cloudinary.uploader.upload(
                     avatar.data,
                     {
                         upload_preset: 'upload',
                     }
-                )
-                candidate.avatar = uploadedResponse.url
+                );
+                candidate.avatar = uploadedResponse.url;
             }
 
-            candidate.userName = userName
-            candidate.realName = realName
-            candidate.company = company
-            candidate.website = website
-            candidate.phone = phone
-            candidate.address = address
+            candidate.userName = userName;
+            candidate.realName = realName;
+            candidate.company = company;
+            candidate.website = website;
+            candidate.phone = phone;
+            candidate.address = address;
 
-            // сохраняем изменения пользователя
-            this.usersRepository.save(candidate)
+            // save user changes
+            this.usersRepository.save(candidate);
         } catch (err) {
-            return err
+            return err;
         }
     }
 }

@@ -1,5 +1,5 @@
-import { UsersController } from './controller/UsersController'
-import { PostsController } from './controller/PostsController'
+import { UsersController } from './controller/UsersController';
+import { PostsController } from './controller/PostsController';
 
 export const Routes = [
     {
@@ -51,4 +51,4 @@ export const Routes = [
         controller: PostsController,
         action: 'savePost',
     },
-]
+];

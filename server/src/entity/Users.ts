@@ -1,34 +1,34 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
 export class Users {
     @PrimaryGeneratedColumn()
-    id: number
+    id: number;
 
     @Column({ default: 'NULL' })
-    userName: string
+    userName: string;
 
     @Column({ type: 'character varying' })
-    password: string
+    password: string;
 
     @Column({ default: 'NULL' })
-    realName: string
+    realName: string;
 
     @Column({ type: 'character varying' })
-    email: string
+    email: string;
 
     @Column({ default: 'NULL' })
-    address: string
+    address: string;
 
     @Column({ default: 'NULL' })
-    phone: string
+    phone: string;
 
     @Column({ default: 'NULL' })
-    website: string
+    website: string;
 
     @Column({ default: 'NULL' })
-    company: string
+    company: string;
 
     @Column({ default: 'NULL' })
-    avatar: string
+    avatar: string;
 }
