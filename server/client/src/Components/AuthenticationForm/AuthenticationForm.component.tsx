@@ -19,7 +19,7 @@ function AuthenticationForm(props: any) {
     ) {
         return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
     });
-    const [open, setOpen] = useState(false);
+    const [isOpen, setisOpen] = useState(false);
     const handleClose = (
         event?: React.SyntheticEvent | Event,
         reason?: string
@@ -27,12 +27,12 @@ function AuthenticationForm(props: any) {
         if (reason === 'clickaway') {
             return;
         }
-        setOpen(false);
+        setisOpen(false);
         clearError();
     };
 
     useEffect(() => {
-        if (error) setOpen(true);
+        if (error) setisOpen(true);
     }, [error]);
 
     return (
@@ -103,7 +103,7 @@ function AuthenticationForm(props: any) {
             </form>
             {{ error } && (
                 <Snackbar
-                    open={open}
+                    open={isOpen}
                     anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                     autoHideDuration={4000}
                     onClose={handleClose}

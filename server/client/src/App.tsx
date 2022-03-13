@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { useAuth } from './Hooks/auth.hook';
-//import { useSelector } from 'react-redux'
+
 import { Routes, Route } from 'react-router-dom';
 
 import PrivateRoute from './Routes/PrivateRoute';
 import PublicRoute from './Routes/PublicRoute';
-import { useAppSelector } from './Hooks/storeHook';
+
 import MainPage from './Pages/MainPage/MainPage.component';
 import PostPage from './Pages/PostPage/PostPage.component';
 import UserPage from './Pages/UserPage/UserPage.component';
@@ -16,6 +16,8 @@ import ProfilePage from './Pages/ProfilePage/ProfilePage.component';
 import NavigateMenu from './Components/NavigateMenu/NavigateMenu.component';
 import RegisterPage from './Pages/RegisterPage/RegisterPage.component';
 import AddPostPage from './Pages/AddPostPage/AddPostPage.component';
+import AddCommentPage from './Pages/AddCommentPage/AddCommentPage.component';
+import Selectors from './Redux/selectors/selectors';
 
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -24,8 +26,8 @@ import './App.css';
 
 const App: React.FC = (): JSX.Element => {
     // check if there is a saved token and if authentication is needed
-    const token = useAppSelector((state) => state.currentUser.token);
-    const isAuthenticated: boolean = !!token;
+
+    const { isAuthenticated } = Selectors();
 
     //connect the logout function from the hook
     const { logout } = useAuth();
@@ -54,17 +56,9 @@ const App: React.FC = (): JSX.Element => {
 
                 <Routes>
                     <Route
-                        path="/"
-                        element={
-                            <PrivateRoute isAuthenticated={isAuthenticated}>
-                                <MainPage />
-                            </PrivateRoute>
-                        }
-                    />
-                    <Route
                         path="/login"
                         element={
-                            <PublicRoute isAuthenticated={isAuthenticated}>
+                            <PublicRoute>
                                 <AuthPage />
                             </PublicRoute>
                         }
@@ -72,7 +66,7 @@ const App: React.FC = (): JSX.Element => {
                     <Route
                         path="/register"
                         element={
-                            <PublicRoute isAuthenticated={isAuthenticated}>
+                            <PublicRoute>
                                 <RegisterPage />
                             </PublicRoute>
                         }
@@ -80,7 +74,7 @@ const App: React.FC = (): JSX.Element => {
                     <Route
                         path="/:page"
                         element={
-                            <PrivateRoute isAuthenticated={isAuthenticated}>
+                            <PrivateRoute>
                                 <MainPage />
                             </PrivateRoute>
                         }
@@ -88,7 +82,7 @@ const App: React.FC = (): JSX.Element => {
                     <Route
                         path="/post/:id"
                         element={
-                            <PrivateRoute isAuthenticated={isAuthenticated}>
+                            <PrivateRoute>
                                 <PostPage />
                             </PrivateRoute>
                         }
@@ -96,7 +90,7 @@ const App: React.FC = (): JSX.Element => {
                     <Route
                         path="/users/:id"
                         element={
-                            <PrivateRoute isAuthenticated={isAuthenticated}>
+                            <PrivateRoute>
                                 <UserPage />
                             </PrivateRoute>
                         }
@@ -104,7 +98,7 @@ const App: React.FC = (): JSX.Element => {
                     <Route
                         path="/users"
                         element={
-                            <PrivateRoute isAuthenticated={isAuthenticated}>
+                            <PrivateRoute>
                                 <UserListPage />
                             </PrivateRoute>
                         }
@@ -112,7 +106,7 @@ const App: React.FC = (): JSX.Element => {
                     <Route
                         path="/myprofile"
                         element={
-                            <PrivateRoute isAuthenticated={isAuthenticated}>
+                            <PrivateRoute>
                                 <ProfilePage />
                             </PrivateRoute>
                         }
@@ -120,8 +114,24 @@ const App: React.FC = (): JSX.Element => {
                     <Route
                         path="/addpost"
                         element={
-                            <PrivateRoute isAuthenticated={isAuthenticated}>
+                            <PrivateRoute>
                                 <AddPostPage />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/addcomment/:postid"
+                        element={
+                            <PrivateRoute>
+                                <AddCommentPage />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/"
+                        element={
+                            <PrivateRoute>
+                                <MainPage />
                             </PrivateRoute>
                         }
                     />

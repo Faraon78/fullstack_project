@@ -3,10 +3,9 @@ import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useHttp } from '../../Hooks/http.hook';
-import { config } from '../../config';
 
 import ProfileForm from '../../Components/ProfileForm/ProfileForm.component';
-import { useAppSelector } from '../../Hooks/storeHook';
+import Selectors from '../../Redux/selectors/selectors';
 
 import { fetchCurrentUserStart } from '../../Redux/currentUser/currentUser.actions';
 
@@ -15,24 +14,21 @@ function ProfilePage() {
     const { request, loading } = useHttp();
     const [previewSource, setPreviewSource] = useState();
     const [message, setMessage] = useState('');
-
-    const data: any = localStorage.getItem(config.STORAGENAME);
-    const id = JSON.parse(data).userId;
+    const { currentUser, id } = Selectors();
 
     //start loading all user data from the database
     useEffect(() => {
         dispatch(fetchCurrentUserStart(id));
     }, [dispatch, id]);
-    const user = useAppSelector((state) => state.currentUser.currentUser);
 
     const initialValues = {
-        userName: `${user.userName}`,
-        realName: `${user.realName}`,
-        company: `${user.company}`,
-        website: `${user.website}`,
-        phone: `${user.phone}`,
-        address: `${user.address}`,
-        avatar: `${user.avatar}`,
+        userName: `${currentUser.userName}`,
+        realName: `${currentUser.realName}`,
+        company: `${currentUser.company}`,
+        website: `${currentUser.website}`,
+        phone: `${currentUser.phone}`,
+        address: `${currentUser.address}`,
+        avatar: `${currentUser.avatar}`,
     };
 
     const formik = useFormik({
@@ -86,7 +82,7 @@ function ProfilePage() {
     return (
         <div className="content-pages">
             <ProfileForm
-                user={user}
+                user={currentUser}
                 formik={formik}
                 loading={loading}
                 handleFileInputChange={handleFileInputChange}

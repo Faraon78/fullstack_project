@@ -1,7 +1,4 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useAppSelector } from '../../Hooks/storeHook';
-
+import React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -10,26 +7,12 @@ import ListItem from '@mui/material/ListItem';
 import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
 
-import { fetchCommentsStart } from '../../Redux/comments/comments.actions';
-
 import './Post.style.css';
 
 function Post(props: any) {
-    const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(fetchCommentsStart(props.id));
-    }, [dispatch, props.id]);
+    const { post, /*user,*/ comments } = props;
 
-    const posts: Array<any> = useAppSelector((state) => state.posts.posts);
-
-    const post: any = posts.find((post) => +post.id === +props.id);
     const { body, title } = post;
-    const users: Array<any> = useAppSelector((state) => state.users.users);
-
-    const user: any = users.find((user) => +user.id === +post.userId);
-    const comments: Array<any> = useAppSelector(
-        (state) => state.comments.comments
-    );
 
     return (
         <div className="content-pages">
@@ -43,7 +26,7 @@ function Post(props: any) {
                         Author
                     </Typography>
                     <Typography variant="h5" component="span">
-                        {user.username}
+                        user.userName
                     </Typography>
                     <Typography sx={{ mb: 1.5 }} color="text.secondary">
                         {title}
@@ -66,21 +49,10 @@ function Post(props: any) {
                     bgcolor: 'background.paper',
                 }}
             >
-                {comments.map((comment) => (
+                {comments.map((comment: any) => (
                     <div key={comment.id}>
                         <ListItem alignItems="flex-start">
-                            <ListItemText
-                                primary={comment.name}
-                                secondary={<>{comment.body}</>}
-                            />
-                            <Typography
-                                sx={{ fontSize: 14 }}
-                                color="text.secondary"
-                                gutterBottom
-                                className="email"
-                            >
-                                {comment.email}
-                            </Typography>
+                            <ListItemText secondary={<>{comment.body}</>} />
                         </ListItem>
 
                         <Divider component="li" />

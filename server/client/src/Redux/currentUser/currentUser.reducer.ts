@@ -1,10 +1,10 @@
 import CurrentUserActionTypes from './currentUser.actionTypes';
 
 interface StateCurrentUser {
-    currentUser: any;
-    token: object | null;
+    currentUser: object;
+    token: string | null;
     isFetching: boolean;
-    errorMessage: String;
+    errorMessage: string;
 }
 const initialState: StateCurrentUser = {
     currentUser: {},

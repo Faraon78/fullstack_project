@@ -20,7 +20,7 @@ export const updateCurrentUser = (currentUser: Object) => ({
     payload: currentUser,
 });
 
-export const userSetToken = (token: object | null) => ({
+export const userSetToken = (token: string | null) => ({
     type: CurrentUserActionTypes.SET_TOKEN,
     payload: token,
 });

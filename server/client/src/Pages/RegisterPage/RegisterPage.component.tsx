@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useHttp } from '../../Hooks/http.hook';
@@ -7,6 +8,7 @@ import RegisterForm from '../../Components/RegisterForm/RegisterForm.component';
 
 function RegisterPage() {
     const { loading, error, request, clearError } = useHttp();
+    const navigate = useNavigate();
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -36,6 +38,7 @@ function RegisterPage() {
                 { email, password },
                 { credentials: true }
             );
+            navigate('/login', { replace: true });
         } catch (e: any) {
             console.log(e.message);
         }

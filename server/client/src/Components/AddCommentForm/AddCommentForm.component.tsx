@@ -7,11 +7,11 @@ import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
-import './AddPostForm.style.css';
+//import './AddPostForm.style.css';
 
-function AddPostForm(props: any) {
+function AddCommentForm(props: any) {
     // function to display an error message
-    const { error, formik, loading, clearError } = props;
+    const { error, formik, post, loading, clearError } = props;
     const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
         props,
         ref
@@ -47,32 +47,25 @@ function AddPostForm(props: any) {
                     component="div"
                 >
                     <div className="auth-header">
-                        <h2>MY POST</h2>
-                    </div>
-
-                    <div className="field">
-                        <TextField
-                            id="standard-multiline-static"
-                            label="Title"
-                            multiline
-                            rows={2}
-                            name="title"
-                            value={formik.values.title}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            fullWidth
-                        />
-                        {formik.touched.title && formik.errors.title && (
-                            <div className="error-post">
-                                {formik.errors.title}
-                            </div>
-                        )}
+                        <h2>NEW COMMENT</h2>
                     </div>
 
                     <div className="field">
                         <TextField
                             id="standard-multiline-static"
                             label="Post"
+                            multiline
+                            rows={2}
+                            name="post"
+                            value={post.body}
+                            fullWidth
+                        />
+                    </div>
+
+                    <div className="field">
+                        <TextField
+                            id="standard-multiline-static"
+                            label="My comment"
                             multiline
                             rows={6}
                             name="body"
@@ -121,4 +114,4 @@ function AddPostForm(props: any) {
         </div>
     );
 }
-export default AddPostForm;
+export default AddCommentForm;

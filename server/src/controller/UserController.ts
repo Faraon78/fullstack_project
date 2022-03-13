@@ -1,13 +1,15 @@
 import { getRepository, getConnection } from 'typeorm';
 
 import { NextFunction, Request, Response } from 'express';
-import { Users } from '../entity/Users';
-import { UsersService } from '../service/UsersService';
+import { Chatuser } from '../entity/Chatuser';
+import { UserService } from '../service/UserService';
+import { PostService } from '../service/PostService';
 import { access } from 'fs';
 
-export class UsersController {
-    private usersRepository = getRepository(Users);
-    UserServiceInstance = new UsersService();
+export class UserController {
+    private userRepository = getRepository(Chatuser);
+    UserServiceInstance = new UserService();
+    PostServiceInstance = new PostService();
 
     //Find all users
     async findAllUsers(
@@ -31,19 +33,48 @@ export class UsersController {
         response: Response,
         next: NextFunction
     ) {
-        const id = +request.params.id;
+        const id: number = +request.params.id;
         try {
             return this.UserServiceInstance.findOneUserDB(id);
-        } catch (err) {}
+        } catch (err) {
+            return response
+                .status(500)
+                .json({ message: 'Something went wrong, try again' });
+        }
     }
 
+    //Find one user by postId
+    async findUserForPost(
+        request: Request,
+        response: Response,
+        next: NextFunction
+    ) {
+        const id: number = +request.params.id;
+        try {
+            const user = await this.UserServiceInstance.findOneForPost(id);
+            console.log(user);
+            return user;
+        } catch (err) {
+            return response
+                .status(500)
+                .json({ message: 'Something went wrong, try again' });
+        }
+    }
     //New User Registration
     async saveUser(request: Request, response: Response, next: NextFunction) {
         try {
             const { email, password } = request.body;
 
-            await this.UserServiceInstance.saveUserDB(email, password);
-
+            const user = await this.UserServiceInstance.saveUserDB(
+                email,
+                password
+            );
+            console.log(user);
+            if (!user) {
+                return response
+                    .status(401)
+                    .json({ message: 'Such user already exsists' });
+            }
             return response.status(201).json({ message: 'User created' });
         } catch (err) {
             return response
@@ -60,14 +91,23 @@ export class UsersController {
                 email,
                 password
             );
+            if (userResponse == 1) {
+                return response
+                    .status(401)
+                    .json({ message: 'User is not found' });
+            } else if (userResponse == 2) {
+                return response
+                    .status(401)
+                    .json({ message: 'Invalid password' });
+            } else {
+                const { token, userId } = userResponse;
 
-            const { token, userId } = userResponse;
-
-            return response.status(200).json({
-                token: token,
-                userId: userId,
-                message: 'Logged is successfully',
-            });
+                return response.status(200).json({
+                    token: token,
+                    userId: userId,
+                    message: 'Logged is successfully',
+                });
+            }
         } catch (err) {
             return response
                 .status(500)

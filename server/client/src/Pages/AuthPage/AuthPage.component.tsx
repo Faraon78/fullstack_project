@@ -43,7 +43,6 @@ function AuthPage() {
                 { email, password },
                 { credentials: 'true' }
             );
-
             login(data.token, data.userId);
         } catch (e: any) {
             console.log(e.message);

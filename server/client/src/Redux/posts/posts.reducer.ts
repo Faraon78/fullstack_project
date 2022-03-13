@@ -1,6 +1,6 @@
 import PostsActionTypes from './posts.actionTypes';
 interface StatePosts {
-    posts: any;
+    posts: Array<object>;
     isFetching: boolean;
     errorMessage: String;
 }

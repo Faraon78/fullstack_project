@@ -4,3 +4,18 @@ nav {
 .content-pages Button {
     margin-bottom: 15px;
 }
+.MuiPagination-root {
+    display: inline-block;
+}
+.content-pages {
+    display: flex;
+    width: 1000px;
+}
+.select {
+    display: flex;
+    justify-content: space-between;
+}
+.switch {
+    font-weight: bold;
+    color: #13589c;
+}

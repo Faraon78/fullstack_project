@@ -2,43 +2,45 @@ import React from 'react';
 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { useHttp } from '../../Hooks/http.hook';
 import Selectors from '../../Redux/selectors/selectors';
 
-import AddPostForm from '../../Components/AddPostForm/AddPostForm.component';
+import AddCommentForm from '../../Components/AddCommentForm/AddCommentForm.component';
 
-function AddPostPage() {
-    const { id } = Selectors();
+function AddCommentPage() {
+    const { id, posts } = Selectors();
+    const { postid }: any = useParams();
     const { request, loading, error, clearError } = useHttp();
     const navigate = useNavigate();
+    const post: any = posts.find((post: any) => +post.id === +postid);
     const formik: any = useFormik({
         initialValues: {
-            title: '',
             body: '',
         },
         validationSchema: Yup.object({
-            title: Yup.string()
-                .max(80, 'Must be less then 80 characters')
-                .required('Required'),
             body: Yup.string().required('Required'),
         }),
         onSubmit: (values) => {
-            console.log(values);
-            const addPost: object = {
+            const addComment: object = {
                 userId: id,
-                title: values.title,
+                postId: postid,
                 body: values.body,
             };
-            handlerAddPost(addPost);
+            handlerAddComment(addComment);
         },
     });
-    const handlerAddPost = async (addPost: object) => {
+    const handlerAddComment = async (addComment: object) => {
         try {
-            await request(`http://localhost:5000/savePost`, 'POST', addPost, {
-                credentials: true,
-            });
+            await request(
+                `http://localhost:5000/saveComment`,
+                'POST',
+                addComment,
+                {
+                    credentials: true,
+                }
+            );
 
             navigate('/', { replace: true });
         } catch (e: any) {
@@ -47,12 +49,13 @@ function AddPostPage() {
     };
 
     return (
-        <AddPostForm
+        <AddCommentForm
             formik={formik}
             error={error}
             loading={loading}
+            post={post}
             clearError={clearError}
         />
     );
 }
-export default AddPostPage;
+export default AddCommentPage;

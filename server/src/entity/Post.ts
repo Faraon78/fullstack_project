@@ -1,12 +1,14 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Users } from './Users';
+import { Chatuser } from './Chatuser';
 
 @Entity()
-export class Posts {
+export class Post {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => Users, (users) => users.id)
+    @ManyToOne(() => Chatuser, (user) => user.id, {
+        cascade: true,
+    })
     userId: number;
 
     @Column({ type: 'character varying' })

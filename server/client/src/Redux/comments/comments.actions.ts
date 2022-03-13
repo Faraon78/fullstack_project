@@ -2,7 +2,7 @@ import CommentsActionTypes from './comments.actionTypes';
 
 export const fetchCommentsStart = (id: number) => ({
     type: CommentsActionTypes.FETCH_COMMENTS_START,
-    payload: { id },
+    payload: id,
 });
 
 export const fetchCommentsSuccess = (data: any) => ({

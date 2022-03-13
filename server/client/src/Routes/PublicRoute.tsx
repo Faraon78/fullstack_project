@@ -1,11 +1,10 @@
 import { Navigate } from 'react-router-dom';
+import Selectors from '../Redux/selectors/selectors';
 
-function PublicRoute({ children }: any, isAuthenticated: boolean) {
-    // return !isAuthenticated ? children : <Navigate to="/" />;
-    if (!isAuthenticated) {
-        return children;
-    }
-    return <Navigate to="/login" />;
+function PublicRoute({ children }: any) {
+    const { isAuthenticated } = Selectors();
+
+    return !isAuthenticated ? children : <Navigate to="/" />;
 }
 
 export default PublicRoute;

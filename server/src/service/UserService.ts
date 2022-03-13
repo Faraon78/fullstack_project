@@ -1,16 +1,18 @@
-import { getRepository } from 'typeorm';
+import { getRepository, createQueryBuilder } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
-const cloudinary = require('cloudinary').v2;
+import { v2 as cloudinary } from 'cloudinary';
+import { Chatuser } from '../entity/Chatuser';
+import { Post } from '../entity/Post';
+import { response } from 'express';
 
-import { Users } from '../entity/Users';
-
-export class UsersService {
-    private usersRepository = getRepository(Users);
+export class UserService {
+    private userRepository = getRepository(Chatuser);
+    private postRepository = getRepository(Post);
 
     async findAllUsersDB() {
         try {
-            return this.usersRepository.find();
+            return this.userRepository.find();
         } catch (err) {
             return err;
         }
@@ -18,7 +20,7 @@ export class UsersService {
 
     async findOneUserDB(id: number) {
         try {
-            return this.usersRepository.findOne({ id: id });
+            return this.userRepository.findOne({ id });
         } catch (err) {
             return err;
         }
@@ -27,23 +29,23 @@ export class UsersService {
     async saveUserDB(email: string, password: string) {
         try {
             //check if there is such a user
-            const candidate = await this.usersRepository.findOne({
-                email: email,
+            const candidate = await this.userRepository.findOne({
+                email,
             });
 
             if (candidate) {
-                throw new Error('This user already exists');
+                return false;
             }
             //encrypt the password
             const hashedPassword = await bcrypt.hash(password, 12);
 
             //create a new User
-            const newUser = new Users();
+            const newUser = new Chatuser();
             newUser.email = email;
             newUser.password = hashedPassword;
 
             // save new user
-            return this.usersRepository.save(newUser);
+            return this.userRepository.save(newUser);
         } catch (err) {
             return err;
         }
@@ -52,16 +54,17 @@ export class UsersService {
     async loginDB(email: string, password: string) {
         try {
             // find user in the database by email
-            const user = await this.usersRepository.findOne({ email: email });
+            const user = await this.userRepository.findOne({ email });
 
             if (!user) {
-                throw new Error('User is not found');
+                console.log('User is not found');
+                return 1;
             }
             // check if the password is correct
             const isMatch = await bcrypt.compare(password, user.password);
 
             if (!isMatch) {
-                throw new Error('Invalid password');
+                return 2; //{message: 'Invalid password'};
             }
 
             // create a token
@@ -95,8 +98,8 @@ export class UsersService {
             });
 
             //find the right user
-            const candidate = await this.usersRepository.findOne({
-                id: id,
+            const candidate = await this.userRepository.findOne({
+                id,
             });
             // save image to cloudinary
             if (avatar.data) {
@@ -117,7 +120,25 @@ export class UsersService {
             candidate.address = address;
 
             // save user changes
-            this.usersRepository.save(candidate);
+            this.userRepository.save(candidate);
+        } catch (err) {
+            return err;
+        }
+    }
+    async findOneForPost(id: number) {
+        try {
+            console.log('запустили findOneForPost');
+            const user = await this.userRepository
+                .createQueryBuilder('user')
+                .leftJoinAndSelect(
+                    Post,
+                    'post',
+                    'public.post."userIdId"=chatuser.id'
+                )
+                .where('post.id=:id', { id: id })
+                .printSql()
+                .getOne();
+            return user;
         } catch (err) {
             return err;
         }
