@@ -29,7 +29,7 @@ export const currentUserReducer = (state = initialState, action: any) => {
             return {
                 ...state,
                 isFetching: false,
-                errorMessage: null,
+                errorMessage: '',
             };
         case CurrentUserActionTypes.UPDATE_CURRENT_USER:
             return {

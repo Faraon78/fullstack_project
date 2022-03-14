@@ -9,8 +9,7 @@ import Selectors from '../../Redux/selectors/selectors';
 import Post from '../../Components/Post/Post.component';
 
 function PostPage() {
-    const { id }: any = useParams();
-    console.log(id);
+    const { id }: any = useParams<{ id: string }>();
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -23,12 +22,8 @@ function PostPage() {
     const { posts, userForPost, comments } = Selectors();
 
     const post: any = posts.find((post: any) => +post.id === +id);
-    console.log(post);
 
-    console.log(comments);
-    console.log(userForPost);
-
-    return <Post post={post} comments={comments} />;
+    return <Post post={post} comments={comments} user={userForPost} />;
 }
 
 export default PostPage;

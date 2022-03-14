@@ -21,7 +21,7 @@ export const userForPostReducer = (state = initialState, action: any) => {
             return {
                 ...state,
                 isFetching: true,
-                currentUser: action.payload,
+                userForPost: action.payload,
             };
         case UserForPostActionTypes.FETCH_USERFORPOST_FAILURE:
             return {

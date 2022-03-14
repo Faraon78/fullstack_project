@@ -1,6 +1,6 @@
 import UserForPostTypes from './userForPost.actionTypes';
 
-export const fetchUserForPostStart = (id: number) => ({
+export const fetchUserForPostStart = (id: string | undefined) => ({
     type: UserForPostTypes.FETCH_USERFORPOST_START,
     payload: id,
 });

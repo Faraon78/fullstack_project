@@ -10,8 +10,8 @@ export function* fetchCommentsAsync({ payload }: any): Generator<any> {
         );
         data = yield data.json();
         yield put(fetchCommentsSuccess(data));
-    } catch (error) {
-        yield put(fetchCommentsFailure(error));
+    } catch (errorMessage: any) {
+        yield put(fetchCommentsFailure(errorMessage));
     }
 }
 

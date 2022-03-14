@@ -10,12 +10,12 @@ export class Comment {
     @ManyToOne(() => Post, (post) => post.id, {
         cascade: true,
     })
-    postId: number;
+    public postId: number;
 
     @ManyToOne(() => Chatuser, (user) => user.id, {
         cascade: true,
     })
-    userId: number;
+    public userId: number;
 
     @Column({ type: 'character varying' })
     body: string;

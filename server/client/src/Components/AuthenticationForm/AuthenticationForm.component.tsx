@@ -12,7 +12,8 @@ import './AuthenticationForm.style.css';
 function AuthenticationForm(props: any) {
     // function to display an error message
     const { error, formik, loading, clearError } = props;
-    const { values, handleChange, handleBlur, errors, touched } = formik;
+    const { values, handleChange, handleBlur, errors, touched, handleSubmit } =
+        formik;
     const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
         props,
         ref
@@ -37,7 +38,7 @@ function AuthenticationForm(props: any) {
 
     return (
         <div className="wrapper-auth">
-            <form onSubmit={formik.handleSubmit}>
+            <form onSubmit={handleSubmit}>
                 <Box
                     sx={{
                         width: 400,
@@ -63,9 +64,7 @@ function AuthenticationForm(props: any) {
                             autoComplete="email"
                         />
                         {touched.email && errors.email && (
-                            <div className="error-auth">
-                                {formik.errors.email}
-                            </div>
+                            <div className="error-auth">{errors.email}</div>
                         )}
                     </div>
 

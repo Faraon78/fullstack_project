@@ -10,10 +10,9 @@ import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import './RegisterForm.style.css';
 
 function RegisterForm(props: any) {
-    const formik = props.formik;
-    const error = props.error;
-    const loading = props.loading;
-    const clearError = props.clearError;
+    const { formik, error, loading, clearError } = props;
+    const { handleSubmit, values, handleChange, handleBlur, touched, errors } =
+        formik;
     const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
         props,
         ref
@@ -39,11 +38,11 @@ function RegisterForm(props: any) {
     return (
         <div className="main">
             <div className="wrapper-reg">
-                <form onSubmit={formik.handleSubmit}>
+                <form onSubmit={handleSubmit}>
                     <Box
                         sx={{
                             width: 400,
-                            height: 500,
+                            height: 600,
                             backgroundColor: 'white',
                             color: 'primary.main',
                         }}
@@ -59,14 +58,29 @@ function RegisterForm(props: any) {
                                 label="Email"
                                 type="email"
                                 name="email"
-                                value={formik.values.email}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
+                                value={values.email}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
                                 autoComplete="email"
                             />
-                            {formik.touched.email && formik.errors.email ? (
+                            {touched.email && errors.email ? (
+                                <div className="error-auth">{errors.email}</div>
+                            ) : null}
+                        </div>
+                        <div className="field">
+                            <TextField
+                                id="outlined-required"
+                                label="userName"
+                                type="text"
+                                name="userName"
+                                value={values.userName}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                autoComplete="userName"
+                            />
+                            {touched.userName && errors.userName ? (
                                 <div className="error-auth">
-                                    {formik.errors.email}
+                                    {errors.userName}
                                 </div>
                             ) : null}
                         </div>
@@ -77,16 +91,15 @@ function RegisterForm(props: any) {
                                 label="Password"
                                 type="password"
                                 name="password"
-                                value={formik.values.password}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
+                                value={values.password}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
                                 autoComplete="current-password"
                             />
 
-                            {formik.touched.password &&
-                            formik.errors.password ? (
+                            {touched.password && errors.password ? (
                                 <div className="error-auth">
-                                    {formik.errors.password}
+                                    {errors.password}
                                 </div>
                             ) : null}
                         </div>
@@ -96,16 +109,16 @@ function RegisterForm(props: any) {
                                 label="confirmPassword"
                                 type="password"
                                 name="confirmPassword"
-                                value={formik.values.confirmPassword}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
+                                value={values.confirmPassword}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
                                 autoComplete="current-password"
                             />
 
-                            {formik.touched.confirmPassword &&
-                            formik.errors.confirmPassword ? (
+                            {touched.confirmPassword &&
+                            errors.confirmPassword ? (
                                 <div className="error-auth">
-                                    {formik.errors.confirmPassword}
+                                    {errors.confirmPassword}
                                 </div>
                             ) : null}
                         </div>

@@ -4,10 +4,6 @@ import { Comment } from '../entity/Comment';
 export class CommentService {
     private commentRepository = getRepository(Comment);
 
-    /*async findAllPosts() {
-        return this.postRepository.find();
-    }*/
-
     async saveComment(userId: number, postId: number, body: string) {
         const newComment = new Comment();
         newComment.userId = userId;

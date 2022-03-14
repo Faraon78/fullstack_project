@@ -36,7 +36,7 @@ export const Routes = [
     {
         method: 'get',
         route: '/userforpost/:id',
-        controller: UserController,
+        controller: PostController,
         action: 'findUserForPost',
     },
     {

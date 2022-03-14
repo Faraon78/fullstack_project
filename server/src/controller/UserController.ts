@@ -43,33 +43,17 @@ export class UserController {
         }
     }
 
-    //Find one user by postId
-    async findUserForPost(
-        request: Request,
-        response: Response,
-        next: NextFunction
-    ) {
-        const id: number = +request.params.id;
-        try {
-            const user = await this.UserServiceInstance.findOneForPost(id);
-            console.log(user);
-            return user;
-        } catch (err) {
-            return response
-                .status(500)
-                .json({ message: 'Something went wrong, try again' });
-        }
-    }
     //New User Registration
     async saveUser(request: Request, response: Response, next: NextFunction) {
         try {
-            const { email, password } = request.body;
+            const { email, userName, password } = request.body;
 
             const user = await this.UserServiceInstance.saveUserDB(
                 email,
+                userName,
                 password
             );
-            console.log(user);
+
             if (!user) {
                 return response
                     .status(401)

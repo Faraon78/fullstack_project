@@ -4,8 +4,8 @@ import * as jwt from 'jsonwebtoken';
 import { v2 as cloudinary } from 'cloudinary';
 import { Chatuser } from '../entity/Chatuser';
 import { Post } from '../entity/Post';
-import { response } from 'express';
-
+import { Request, response } from 'express';
+const post = new Post();
 export class UserService {
     private userRepository = getRepository(Chatuser);
     private postRepository = getRepository(Post);
@@ -26,7 +26,7 @@ export class UserService {
         }
     }
 
-    async saveUserDB(email: string, password: string) {
+    async saveUserDB(email: string, userName: string, password: string) {
         try {
             //check if there is such a user
             const candidate = await this.userRepository.findOne({
@@ -42,6 +42,7 @@ export class UserService {
             //create a new User
             const newUser = new Chatuser();
             newUser.email = email;
+            newUser.userName = userName;
             newUser.password = hashedPassword;
 
             // save new user
@@ -79,7 +80,7 @@ export class UserService {
             return err;
         }
     }
-    async updateUserDB(request: any) {
+    async updateUserDB(request: Request) {
         try {
             const {
                 id,
@@ -121,24 +122,6 @@ export class UserService {
 
             // save user changes
             this.userRepository.save(candidate);
-        } catch (err) {
-            return err;
-        }
-    }
-    async findOneForPost(id: number) {
-        try {
-            console.log('запустили findOneForPost');
-            const user = await this.userRepository
-                .createQueryBuilder('user')
-                .leftJoinAndSelect(
-                    Post,
-                    'post',
-                    'public.post."userIdId"=chatuser.id'
-                )
-                .where('post.id=:id', { id: id })
-                .printSql()
-                .getOne();
-            return user;
         } catch (err) {
             return err;
         }

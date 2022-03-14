@@ -3,7 +3,7 @@ import CurrentPostsActionTypes from './currentPosts.actionTypes';
 interface StateCurrentPosts {
     currentPosts: Array<object>;
     isFetching: boolean;
-    errorMessage: String;
+    errorMessage: string;
 }
 const initialState: StateCurrentPosts = {
     currentPosts: [],

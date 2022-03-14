@@ -26,7 +26,7 @@ export const postsReducer = (state = initialState, action: any) => {
             return {
                 ...state,
                 isFetching: false,
-                errorMessage: null,
+                errorMessage: '',
             };
         default:
             return state;

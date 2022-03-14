@@ -9,7 +9,7 @@ export class Post {
     @ManyToOne(() => Chatuser, (user) => user.id, {
         cascade: true,
     })
-    userId: number;
+    public userId: number;
 
     @Column({ type: 'character varying' })
     title: string;

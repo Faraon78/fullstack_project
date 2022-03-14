@@ -5,13 +5,20 @@ import * as Yup from 'yup';
 import { useHttp } from '../../Hooks/http.hook';
 
 import RegisterForm from '../../Components/RegisterForm/RegisterForm.component';
+interface RegisterFormValues {
+    email: string;
+    userName: string;
+    password: string;
+    confirmPassword: string;
+}
 
 function RegisterPage() {
     const { loading, error, request, clearError } = useHttp();
     const navigate = useNavigate();
-    const formik = useFormik({
+    const formik = useFormik<RegisterFormValues>({
         initialValues: {
             email: '',
+            userName: '',
             password: '',
             confirmPassword: '',
         },
@@ -19,6 +26,7 @@ function RegisterPage() {
             email: Yup.string()
                 .email('Invalid email address')
                 .required('Required'),
+            userName: Yup.string().required('Required'),
             password: Yup.string()
                 .min(6, 'Must be 6 characters or more')
                 .required('Required'),
@@ -27,15 +35,19 @@ function RegisterPage() {
                 .required('Required'),
         }),
         onSubmit: (values) => {
-            registerHandler(values.email, values.password);
+            registerHandler(values.email, values.userName, values.password);
         },
     });
-    const registerHandler = async (email: string, password: string) => {
+    const registerHandler = async (
+        email: string,
+        userName: string,
+        password: string
+    ) => {
         try {
             await request(
                 'http://localhost:5000/auth/register',
                 'POST',
-                { email, password },
+                { email, userName, password },
                 { credentials: true }
             );
             navigate('/login', { replace: true });

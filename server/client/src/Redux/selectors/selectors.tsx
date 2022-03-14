@@ -4,21 +4,21 @@ import { config } from '../../config';
 
 function Selectors() {
     const { currentUser }: any = useSelector<RootState, object>(
-        (state) => state.currentUser
+        (state) => state.currentUserRoot
     );
-    const data: any = localStorage.getItem(config.STORAGENAME);
-    let token;
+    const data: string | null = localStorage.getItem(config.STORAGENAME);
+    let token: string | null = null;
     if (data) {
         token = JSON.parse(data).token;
     }
-    let id;
+    let id: string = '';
     if (data) {
         id = JSON.parse(data).userId;
     }
     const isAuthenticated: boolean = !!token;
 
-    const { posts }: any = useSelector<RootState, object>(
-        (state) => state.posts
+    const posts: any = useSelector<RootState, object>(
+        (state) => state.posts.posts
     );
     const { currentPosts }: any = useSelector<RootState, object>(
         (state) => state.currentPosts
@@ -35,7 +35,6 @@ function Selectors() {
 
     return {
         currentUser,
-        token,
         posts,
         users,
         comments,
@@ -43,6 +42,7 @@ function Selectors() {
         id,
         currentPosts,
         userForPost,
+        token,
     };
 }
 export default Selectors;

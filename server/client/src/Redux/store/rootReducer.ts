@@ -10,7 +10,7 @@ export const rootReducer = combineReducers({
     posts: postsReducer,
     users: usersReducer,
     comments: commentsReducer,
-    currentUser: currentUserReducer,
+    currentUserRoot: currentUserReducer,
     currentPosts: currentPostsReducer,
     userForPost: userForPostReducer,
 });

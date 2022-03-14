@@ -32,4 +32,21 @@ export class PostService {
     async findPostsForUser(id: number) {
         return this.postRepository.find({ userId: id });
     }
+
+    async findOneForPost(id: number) {
+        try {
+            const post = await this.postRepository
+                .createQueryBuilder('post')
+                .leftJoinAndSelect(
+                    'post.userId',
+                    'chatuser',
+                    'post.userId=chatuser.id'
+                )
+                .where('post.id=:id', { id })
+                .getOne();
+            return post;
+        } catch (err) {
+            return err;
+        }
+    }
 }

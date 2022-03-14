@@ -39,17 +39,6 @@ function PostsList(props: any) {
                     <div className="btn_group">
                         {ifChecked && (
                             <>
-                                <NavLink to={`/addcomment/${post.id}`}>
-                                    <Button
-                                        variant="contained"
-                                        type="button"
-                                        size="small"
-                                        className="but_comment"
-                                    >
-                                        EDIT POST
-                                    </Button>
-                                </NavLink>
-
                                 <Button
                                     variant="contained"
                                     type="button"

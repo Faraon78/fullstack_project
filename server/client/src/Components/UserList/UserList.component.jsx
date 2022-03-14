@@ -26,10 +26,10 @@ function UserList(props) {
                 <Link to={`/users/${user.id}`} key={user.id}>
                     <ListItem alignItems="flex-start" className="link">
                         <ListItemAvatar>
-                            <Avatar alt={user.userName} />
+                            <Avatar src={user.avatar} alt={user.userName} />
                         </ListItemAvatar>
                         <ListItemText
-                            primary={'Username: ' + user.userName || user.email}
+                            primary={'Username: ' + user.userName}
                             secondary={
                                 <React.Fragment>
                                     <Typography
@@ -42,7 +42,7 @@ function UserList(props) {
                                     </Typography>
                                     {'  e-mail: ' + user.email}
                                     <br />
-                                    {'city: ' + user.address}
+                                    {'address: ' + user.address}
                                 </React.Fragment>
                             }
                         />

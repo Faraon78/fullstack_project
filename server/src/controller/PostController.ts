@@ -49,4 +49,21 @@ export class PostController {
         const id = request.params.id;
         return this.PostServiceInstance.findPostsForUser(+id);
     }
+
+    async findUserForPost(
+        request: Request,
+        response: Response,
+        next: NextFunction
+    ) {
+        const id: number = +request.params.id;
+        try {
+            const post = await this.PostServiceInstance.findOneForPost(id);
+            const { userId } = post;
+            return userId;
+        } catch (err) {
+            return response
+                .status(500)
+                .json({ message: 'Something went wrong, try again' });
+        }
+    }
 }

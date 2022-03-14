@@ -3,6 +3,8 @@ import React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
 
 function User(props: any) {
     const currentUser = props.currentUser;
@@ -10,11 +12,17 @@ function User(props: any) {
     return (
         <Card sx={{ minWidth: 275, maxWidth: 1000 }} className="card-note">
             <CardContent>
+                <ListItemAvatar>
+                    <Avatar
+                        src={currentUser.avatar}
+                        alt={currentUser.userName}
+                    />
+                </ListItemAvatar>
                 <Typography variant="h6" color="text.secondary">
-                    Username: {currentUser.username}
+                    Username: {currentUser.userName}
                 </Typography>
                 <Typography variant="h5" component="span">
-                    Name: {currentUser.name}
+                    Name: {currentUser.realName}
                 </Typography>
                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
                     E-mail: {currentUser.email}
@@ -23,17 +31,13 @@ function User(props: any) {
                     Phone: {currentUser.phone}
                 </Typography>
                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                    Adress: {currentUser.address.city},{' '}
-                    {currentUser.address.street}, {currentUser.address.suite}
+                    Adress: {currentUser.address}
                 </Typography>
                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
                     Website: {currentUser.website}
                 </Typography>
                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                    Company: {currentUser.company.name}
-                </Typography>
-                <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                    CatchPhrase: {currentUser.company.catchPhrase}
+                    Company: {currentUser.company}
                 </Typography>
             </CardContent>
         </Card>

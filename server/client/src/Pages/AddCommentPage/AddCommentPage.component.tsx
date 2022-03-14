@@ -11,10 +11,10 @@ import AddCommentForm from '../../Components/AddCommentForm/AddCommentForm.compo
 
 function AddCommentPage() {
     const { id, posts } = Selectors();
-    const { postid }: any = useParams();
+    const { postid } = useParams<{ postid: string }>();
     const { request, loading, error, clearError } = useHttp();
     const navigate = useNavigate();
-    const post: any = posts.find((post: any) => +post.id === +postid);
+    const post: object = posts.find((post: any) => post.id === postid);
     const formik: any = useFormik({
         initialValues: {
             body: '',

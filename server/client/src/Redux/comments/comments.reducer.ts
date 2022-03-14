@@ -1,9 +1,14 @@
 import CommentsActionTypes from './comments.actionTypes';
+interface commentState {
+    comments: Array<object>;
+    isFetching: boolean;
+    errorMessage: string;
+}
 
-const initialState = {
+const initialState: commentState = {
     comments: [],
     isFetching: false,
-    errorMessage: undefined,
+    errorMessage: '',
 };
 export const commentsReducer = (state = initialState, action: any) => {
     switch (action.type) {
@@ -22,7 +27,7 @@ export const commentsReducer = (state = initialState, action: any) => {
             return {
                 ...state,
                 isFetching: false,
-                errorMessage: null,
+                errorMessage: '',
             };
         default:
             return state;

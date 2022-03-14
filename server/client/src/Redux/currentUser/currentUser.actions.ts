@@ -1,6 +1,6 @@
 import CurrentUserActionTypes from './currentUser.actionTypes';
 
-export const fetchCurrentUserStart = (id: number) => ({
+export const fetchCurrentUserStart = (id: string) => ({
     type: CurrentUserActionTypes.FETCH_CURRENTUSER_START,
     payload: id,
 });
@@ -10,7 +10,7 @@ export const fetchCurrentUserSuccess = (data: Object) => ({
     payload: data,
 });
 
-export const fetchCurrentUserFailure = (errorMessage: any) => ({
+export const fetchCurrentUserFailure = (errorMessage: string) => ({
     type: CurrentUserActionTypes.FETCH_CURRENTUSER_FAILURE,
     payload: errorMessage,
 });

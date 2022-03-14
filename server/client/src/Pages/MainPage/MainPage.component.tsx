@@ -33,7 +33,7 @@ function MainPage() {
         dispatch(fetchCurrentPostsStart(id));
     }, [dispatch, id]);
 
-    let { page }: any = useParams<string>();
+    let { page }: any = useParams();
 
     page = Number(page) || 1;
 
