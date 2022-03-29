@@ -1,39 +1,43 @@
-.field{
-    margin-top: 20px;
-    margin-bottom: 50px;
-};
+.field {
+    margin-top: 35px;
+    margin-bottom: 40px;
+}
 
-div.auth-header{
-    padding-top: 10px;  
-    text-align: center;      
+div.auth-header {
+    text-align: center;
 }
-h2.auth-header{
-    text-align: center;  
+h2 {
+    text-align: center;
+    padding-top: 25px;
 }
-.btn{
-    margin-top: 30px;
+.btn {
+    margin-top: 10px;
     gap: 20px;
     justify-content: center;
 }
 
-.btn button{
-  width: 120px;  
-  margin-bottom: 30px;
-  margin-right: 10px;
-  margin-left: 10px; 
-  margin-top: 20px;
-  
-    
+.btn button {
+    width: 120px;
+    margin-bottom: 0px;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-top: 15px;
 }
-.btn button:last-child{
-    background-color: rgb(26, 160, 26);
-}
+
 .alert {
     position: absolute;
     min-width: 368px;
 }
-div.wrapper-auth{
+div.wrapper-auth {
     display: flex;
     justify-content: center;
     text-align: center;
+}
+
+.error-auth {
+    position: absolute;
+    text-align: center;
+    color: red;
+    width: 400px;
+    margin-top: 3px;
 }

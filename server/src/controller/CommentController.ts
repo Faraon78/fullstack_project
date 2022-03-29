@@ -1,29 +1,74 @@
-import {getRepository} from "typeorm";
-import {NextFunction, Request, Response} from "express";
-import {Comments} from "../entity/Comments";
-
+import { getRepository } from 'typeorm';
+import { NextFunction, Request, Response } from 'express';
+import { CommentService } from '../service/CommentService';
 export class CommentController {
+    CommentServiceInstance = new CommentService();
 
-    private commentRepository = getRepository(Comments);
+    async saveComment(
+        request: Request,
+        response: Response,
+        next: NextFunction
+    ) {
+        try {
+            const { userId, postId, body } = request.body;
 
-    async all(request: Request, response: Response, next: NextFunction) {
-        return this.commentRepository.find();
-    }
-    async allforPost(request: Request, response: Response, next: NextFunction) {
-        return this.commentRepository.find({ where: { postId: request.params.postId } });
-    }
-
-    async one(request: Request, response: Response, next: NextFunction) {
-        return this.commentRepository.findOne(request.params.id);
-    }
-
-    async save(request: Request, response: Response, next: NextFunction) {
-        return this.commentRepository.save(request.body);
-    }
-
-    async remove(request: Request, response: Response, next: NextFunction) {
-        let commentToRemove = await this.commentRepository.findOne(request.params.id);
-        await this.commentRepository.remove(commentToRemove);
+            this.CommentServiceInstance.saveComment(userId, postId, body);
+            return response.status(201).json({ message: 'Comment created' });
+        } catch (err) {
+            return response
+                .status(500)
+                .json({ message: 'Something went wrong, please try again' });
+        }
     }
 
+    async removeOneComment(
+        request: Request,
+        response: Response,
+        next: NextFunction
+    ) {
+        try {
+            const id = request.params.id;
+
+            this.CommentServiceInstance.removeOneComment(+id);
+            return response.status(200).json({ message: 'Comment deleted' });
+        } catch (err) {
+            return response
+                .status(500)
+                .json({ message: 'Something went wrong, please try again' });
+        }
+    }
+    async removeCommentforPost(
+        request: Request,
+        response: Response,
+        next: NextFunction
+    ) {
+        try {
+            const postId = request.params.id;
+
+            this.CommentServiceInstance.removeCommentForPost(+postId);
+            return response.status(200).json({ message: 'Comments deleted' });
+        } catch (err) {
+            return response
+                .status(500)
+                .json({ message: 'Something went wrong, please try again' });
+        }
+    }
+
+    async commentForPost(
+        request: Request,
+        response: Response,
+        next: NextFunction
+    ) {
+        try {
+            const postId = request.params.id;
+            const comments =
+                await this.CommentServiceInstance.findCommentForPost(+postId);
+
+            return comments;
+        } catch (err) {
+            return response
+                .status(500)
+                .json({ message: 'Something went wrong, please try again' });
+        }
+    }
 }

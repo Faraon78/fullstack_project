@@ -1,13 +1,25 @@
-.PostsList{
+.PostsList {
     flex-basis: 800px;
-  }
-  a{
-    text-decoration: none;    
-  }
-  a:visited{
-    text-decoration: none;  
-  }
-  .link:hover{
+}
+a {
+    text-decoration: none;
+}
+a:visited {
+    text-decoration: none;
+}
+.link:hover {
     background-color: lightsteelblue;
-  }
- 
+}
+.noPosts {
+    font-weight: bold;
+}
+.btn_group {
+    text-align: right;
+    padding-right: 20px;
+}
+.content-pages Button.but_comment {
+    margin-bottom: 2px;
+}
+.btn_group Button {
+    margin-left: 20px;
+}
