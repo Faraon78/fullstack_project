@@ -1,54 +1,78 @@
-import { UsersController } from './controller/UsersController'
-import { PostsController } from './controller/PostsController'
+import { UserController } from './controller/UserController';
+import { PostController } from './controller/PostController';
+import { CommentController } from './controller/CommentController';
 
 export const Routes = [
     {
         method: 'get',
         route: '/users',
-        controller: UsersController,
+        controller: UserController,
         action: 'findAllUsers',
     },
     {
         method: 'get',
         route: '/users/:id',
-        controller: UsersController,
+        controller: UserController,
         action: 'findOneUser',
     },
     {
         method: 'post',
         route: '/auth/register',
-        controller: UsersController,
+        controller: UserController,
         action: 'saveUser',
     },
     {
         method: 'post',
         route: '/auth/login',
-        controller: UsersController,
+        controller: UserController,
         action: 'login',
     },
-    /*{
-        method: 'delete',
-        route: '/users/:id',
-        controller: UsersController,
-        action: 'remove',
-    },*/
     {
         method: 'patch',
         route: '/users/:id',
-        controller: UsersController,
+        controller: UserController,
         action: 'updateUser',
     },
-
+    {
+        method: 'get',
+        route: '/userforpost/:id',
+        controller: PostController,
+        action: 'findUserForPost',
+    },
     {
         method: 'get',
         route: '/posts',
-        controller: PostsController,
+        controller: PostController,
         action: 'findAllPosts',
     },
     {
         method: 'post',
         route: '/savePost',
-        controller: PostsController,
+        controller: PostController,
         action: 'savePost',
     },
-]
+    {
+        method: 'get',
+        route: '/curPosts/:id',
+        controller: PostController,
+        action: 'findPostsForUser',
+    },
+    {
+        method: 'delete',
+        route: '/post/:id',
+        controller: PostController,
+        action: 'removePost',
+    },
+    {
+        method: 'post',
+        route: '/saveComment',
+        controller: CommentController,
+        action: 'saveComment',
+    },
+    {
+        method: 'get',
+        route: '/comments/:id',
+        controller: CommentController,
+        action: 'commentForPost',
+    },
+];
